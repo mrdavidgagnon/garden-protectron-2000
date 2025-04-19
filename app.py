@@ -2,11 +2,11 @@ from flask import Flask, Response, render_template_string
 from picamera2 import Picamera2, Preview
 import cv2
 
-
-import RPi.GPIO as GPIO
+import pigpio
 import time
-
-
+from flask import Flask, Response, render_template_string, request
+from picamera2 import Picamera2, Preview
+import cv2
 
 app = Flask(__name__)
 
@@ -16,21 +16,29 @@ camera_config = picam2.create_video_configuration(main={"size": (640, 480)})
 picam2.configure(camera_config)
 picam2.start()
 
-# Servo setup
+# Servo setup with pigpio
+SERVO_PIN_PAN = 24  # Replace with the GPIO pin connected to your servo
+SERVO_PIN_TILT = 23  # Replace with the GPIO pin connected to your servo
+GPIO_PWM_FREQUENCY = 50
+NEUTRAL_DC = 1500 # 90deg
+MIN_DC = 500 # 0deg
+MAX_DC = 2500 # 180deg
 
-SERVO_PIN = 24  # Replace with the GPIO pin connected to your servo
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(SERVO_PIN, GPIO.OUT)
-servo = GPIO.PWM(SERVO_PIN, 50)  # 50Hz frequency
-servo.start(7.5)  # Neutral position
+pi = pigpio.pi()
+pi.set_mode(SERVO_PIN_PAN, pigpio.OUTPUT)
+pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)
+pi.set_mode(SERVO_PIN_TILT, pigpio.OUTPUT)
+pi.set_servo_pulsewidth(SERVO_PIN_TILT, NEUTRAL_DC)
+
 
 def move_servo(direction):
     if direction == "left":
-        servo.ChangeDutyCycle(5)  # Adjust for your servo's left position
+        pi.set_servo_pulsewidth(SERVO_PIN_PAN, MIN_DC)
     elif direction == "right":
-        servo.ChangeDutyCycle(10)  # Adjust for your servo's right position
+        pi.set_servo_pulsewidth(SERVO_PIN_PAN, MAX_DC)
     time.sleep(0.5)
-    servo.ChangeDutyCycle(7.5)  # Return to neutral position
+    pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)  # Back to neutral
+
 
 HTML_PAGE = """
 <html>
@@ -131,5 +139,8 @@ if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, threaded=True)
     finally:
-        servo.stop()
-        GPIO.cleanup()
+        # Cleanup GPIO and pigpio on exit
+        pi.set_servo_pulsewidth(SERVO_PIN_PAN, 0)
+        pi.set_servo_pulsewidth(SERVO_PIN_TILT, 0)
+        pi.stop()
+        picam2.close()        

@@ -23,6 +23,9 @@ GPIO_PWM_FREQUENCY = 50
 NEUTRAL_DC = 1500 # 90deg
 MIN_DC = 500 # 0deg
 MAX_DC = 2500 # 180deg
+CURRENT_PAN = NEUTRAL_DC
+CURRENT_TILT = NEUTRAL_DC
+
 
 pi = pigpio.pi()
 pi.set_mode(SERVO_PIN_PAN, pigpio.OUTPUT)
@@ -30,14 +33,28 @@ pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)
 pi.set_mode(SERVO_PIN_TILT, pigpio.OUTPUT)
 pi.set_servo_pulsewidth(SERVO_PIN_TILT, NEUTRAL_DC)
 
+PAN_STEP = 100
+TILT_STEP = 100
 
-def move_servo(direction):
+
+def step_servo_pan(direction):
+    global CURRENT_PAN
     if direction == "left":
-        pi.set_servo_pulsewidth(SERVO_PIN_PAN, MIN_DC)
+        CURRENT_PAN = max(MIN_DC, CURRENT_PAN - PAN_STEP)
+        pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
     elif direction == "right":
-        pi.set_servo_pulsewidth(SERVO_PIN_PAN, MAX_DC)
-    time.sleep(0.5)
-    pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)  # Back to neutral
+        CURRENT_PAN = min(MAX_DC, CURRENT_PAN + PAN_STEP)
+        pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
+    print(f"Pan position: {CURRENT_PAN}")
+def step_servo_tilt(direction):
+    global CURRENT_TILT
+    if direction == "up":
+        CURRENT_TILT = max(MIN_DC, CURRENT_TILT - TILT_STEP)
+        pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
+    elif direction == "down":
+        CURRENT_TILT = min(MAX_DC, CURRENT_TILT + TILT_STEP)
+        pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
+    print(f"Tilt position: {CURRENT_TILT}")
 
 
 HTML_PAGE = """
@@ -48,8 +65,11 @@ HTML_PAGE = """
 <body>
 <img src="{{ url_for('video_feed') }}" width="640" height="480">
 <br>
-<button onclick="fetch('/move_servo?direction=left')">Move Left</button>
-<button onclick="fetch('/move_servo?direction=right')">Move Right</button>
+<button onclick="fetch('/pan_step?direction=left')">Left</button>
+<button onclick="fetch('/pan_step?direction=right')">Right</button>
+<br>
+<button onclick="fetch('/tilt_step?direction=up')">Up</button>
+<button onclick="fetch('/tilt_step?direction=down')">Down</button>
 </body>
 </html>
 """
@@ -128,13 +148,20 @@ def video_feed():
     return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/move_servo')
-def move_servo_route():
+@app.route('/pan_step')
+def pan_step_route():
     direction = request.args.get('direction')
     if direction in ["left", "right"]:
-        move_servo(direction)
+        step_servo_pan(direction)
     return ("", 204)  # No content response
 
+@app.route('/tilt_step')
+def tilt_step_route():
+    direction = request.args.get('direction')
+    if direction in ["up", "down"]:
+        step_servo_tilt(direction)
+    return ("", 204)  # No content response
+        
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, threaded=True)

@@ -2,6 +2,7 @@ from flask import Flask, Response, render_template_string
 from picamera2 import Picamera2, Preview
 import cv2
 
+import RPi.GPIO as gpio
 import pigpio
 import time
 from flask import Flask, Response, render_template_string, request
@@ -25,18 +26,43 @@ MIN_DC = 500 # 0deg
 MAX_DC = 2500 # 180deg
 CURRENT_PAN = NEUTRAL_DC
 CURRENT_TILT = NEUTRAL_DC
-
-
 pi = pigpio.pi()
 pi.set_mode(SERVO_PIN_PAN, pigpio.OUTPUT)
 pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)
 pi.set_mode(SERVO_PIN_TILT, pigpio.OUTPUT)
 pi.set_servo_pulsewidth(SERVO_PIN_TILT, NEUTRAL_DC)
 
+# Solinoid setup 
+SOLINOID_PIN = 5  # Replace with the GPIO pin connected to your solenoid
+SOLINOID_PIN_2 = 6
+# Initialize GPIO
+gpio.setmode(gpio.BCM)
+gpio.setup(SOLINOID_PIN, gpio.OUT)
+gpio.setup(SOLINOID_PIN_2, gpio.OUT)
+gpio.output(SOLINOID_PIN, gpio.LOW)  # Set the solenoid to LOW (off)    
+gpio.output(SOLINOID_PIN_2, gpio.LOW)  # Set the solenoid to LOW (off)   
+
+SOLINOID_PULSE_TIME = 0.5  # Time in seconds to set the solenoid
+
+def solinoid_on():
+    gpio.output(SOLINOID_PIN, gpio.LOW)
+    gpio.output(SOLINOID_PIN_2, gpio.HIGH)
+    time.sleep(SOLINOID_PULSE_TIME)
+    gpio.output(SOLINOID_PIN, gpio.LOW)
+    gpio.output(SOLINOID_PIN_2, gpio.LOW)
+
+def solinoid_off():
+    gpio.output(SOLINOID_PIN, gpio.HIGH)
+    gpio.output(SOLINOID_PIN_2, gpio.LOW)
+    time.sleep(SOLINOID_PULSE_TIME)
+    gpio.output(SOLINOID_PIN, gpio.LOW)
+    gpio.output(SOLINOID_PIN_2, gpio.LOW)
+
+
+
+
 PAN_STEP = 100
 TILT_STEP = 100
-
-
 def step_servo_pan(direction):
     global CURRENT_PAN
     if direction == "left":
@@ -70,6 +96,9 @@ HTML_PAGE = """
 <br>
 <button onclick="fetch('/tilt_step?direction=up')">Up</button>
 <button onclick="fetch('/tilt_step?direction=down')">Down</button>
+<br>
+<button onclick="fetch('/solinoid_on')">Solenoid ON</button>
+<button onclick="fetch('/solinoid_off')">Solenoid OFF</button>
 </body>
 </html>
 """
@@ -161,7 +190,19 @@ def tilt_step_route():
     if direction in ["up", "down"]:
         step_servo_tilt(direction)
     return ("", 204)  # No content response
-        
+
+@app.route('/solinoid_on')
+def solinoid_on_route():
+    solinoid_on()
+    return ("", 204)  # No content response
+
+@app.route('/solinoid_off')
+def solinoid_off_route():
+    solinoid_off()
+    return ("", 204)  # No content response
+
+
+
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, threaded=True)

@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Initialize Picamera2
 picam2 = Picamera2()
-camera_config = picam2.create_video_configuration(main={"size": (640, 480)})
+camera_config = picam2.create_video_configuration(main={"size": (1024, 760)})
 picam2.configure(camera_config)
 picam2.start()
 
@@ -33,8 +33,8 @@ pi.set_mode(SERVO_PIN_TILT, pigpio.OUTPUT)
 pi.set_servo_pulsewidth(SERVO_PIN_TILT, NEUTRAL_DC)
 
 # Solinoid setup 
-SOLINOID_PIN = 5  # Replace with the GPIO pin connected to your solenoid
-SOLINOID_PIN_2 = 6
+SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
+SOLINOID_PIN_2 = 27
 # Initialize GPIO
 gpio.setmode(gpio.BCM)
 gpio.setup(SOLINOID_PIN, gpio.OUT)
@@ -42,66 +42,150 @@ gpio.setup(SOLINOID_PIN_2, gpio.OUT)
 gpio.output(SOLINOID_PIN, gpio.LOW)  # Set the solenoid to LOW (off)    
 gpio.output(SOLINOID_PIN_2, gpio.LOW)  # Set the solenoid to LOW (off)   
 
-SOLINOID_PULSE_TIME = 0.5  # Time in seconds to set the solenoid
-
-def solinoid_on():
-    gpio.output(SOLINOID_PIN, gpio.LOW)
-    gpio.output(SOLINOID_PIN_2, gpio.HIGH)
-    time.sleep(SOLINOID_PULSE_TIME)
-    gpio.output(SOLINOID_PIN, gpio.LOW)
-    gpio.output(SOLINOID_PIN_2, gpio.LOW)
+SOLINOID_SET_TIME = .3  # Time in seconds to set the solenoid
+SOLINOID_PULSE_TIME = .5  # Time in seconds to set the solenoid
 
 def solinoid_off():
-    gpio.output(SOLINOID_PIN, gpio.HIGH)
-    gpio.output(SOLINOID_PIN_2, gpio.LOW)
-    time.sleep(SOLINOID_PULSE_TIME)
+    gpio.output(SOLINOID_PIN, gpio.LOW)
+    gpio.output(SOLINOID_PIN_2, gpio.HIGH)
+    time.sleep(SOLINOID_SET_TIME)
     gpio.output(SOLINOID_PIN, gpio.LOW)
     gpio.output(SOLINOID_PIN_2, gpio.LOW)
 
+def solinoid_on():
+    gpio.output(SOLINOID_PIN, gpio.HIGH)
+    gpio.output(SOLINOID_PIN_2, gpio.LOW)
+    time.sleep(SOLINOID_SET_TIME)
+    gpio.output(SOLINOID_PIN, gpio.LOW)
+    gpio.output(SOLINOID_PIN_2, gpio.LOW)
 
+def solinoid_pulse():
+        solinoid_on()
+        time.sleep(SOLINOID_PULSE_TIME)
+        solinoid_off()
 
-
-PAN_STEP = 100
-TILT_STEP = 100
-def step_servo_pan(direction):
+PAN_STEP_FINE = 10
+TILT_STEP_FINE = 10
+PAN_STEP = 50
+TILT_STEP = 50
+def step_servo_pan(direction, fine=False):
     global CURRENT_PAN
-    if direction == "left":
-        CURRENT_PAN = max(MIN_DC, CURRENT_PAN - PAN_STEP)
+    step = PAN_STEP_FINE if fine else PAN_STEP
+    if direction == "right":
+        CURRENT_PAN = max(MIN_DC, CURRENT_PAN - step)
         pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
-    elif direction == "right":
-        CURRENT_PAN = min(MAX_DC, CURRENT_PAN + PAN_STEP)
+    elif direction == "left":
+        CURRENT_PAN = min(MAX_DC, CURRENT_PAN + step)
         pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
     print(f"Pan position: {CURRENT_PAN}")
-def step_servo_tilt(direction):
+def step_servo_tilt(direction, fine=False):
     global CURRENT_TILT
+    step = TILT_STEP_FINE if fine else TILT_STEP
     if direction == "up":
-        CURRENT_TILT = max(MIN_DC, CURRENT_TILT - TILT_STEP)
+        CURRENT_TILT = max(MIN_DC, CURRENT_TILT - step)
         pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
     elif direction == "down":
-        CURRENT_TILT = min(MAX_DC, CURRENT_TILT + TILT_STEP)
+        CURRENT_TILT = min(MAX_DC, CURRENT_TILT + step)
         pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
     print(f"Tilt position: {CURRENT_TILT}")
-
-
+        
 HTML_PAGE = """
-<html>
-<head>
-<title>Garden Protectron 2000</title>
-</head>
-<body>
-<img src="{{ url_for('video_feed') }}" width="640" height="480">
-<br>
-<button onclick="fetch('/pan_step?direction=left')">Left</button>
-<button onclick="fetch('/pan_step?direction=right')">Right</button>
-<br>
-<button onclick="fetch('/tilt_step?direction=up')">Up</button>
-<button onclick="fetch('/tilt_step?direction=down')">Down</button>
-<br>
-<button onclick="fetch('/solinoid_on')">Solenoid ON</button>
-<button onclick="fetch('/solinoid_off')">Solenoid OFF</button>
-</body>
-</html>
-"""
+    <html>
+    <head>
+    <title>Garden Protectron 2000</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body {
+        -webkit-touch-callout: none;
+        -webkit-text-size-adjust: none;
+        display: flex;
+        flex-direction: row; /* Arrange items horizontally */
+        height: 100vh; /* Occupy full viewport height */
+        margin: 0;
+        font-size: 1.5em; /* Make text bigger */
+    }
+    .video-container {
+        width: 66%; /* Video takes up 2/3 of the screen */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .controls-container {
+        width: 34%; /* Controls take up remaining 1/3 */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around; /* Distribute buttons evenly */
+        align-items: center;
+    }
+    .arrow-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Three columns */
+        grid-template-rows: repeat(3, 1fr);    /* Three rows */
+        gap: 0.1em;                             /* Spacing between buttons */
+        width: 100%;                            /* Take up full width of container */
+        max-width: 300px;                       /* Limit the width of the grid */
+    }
+    .arrow-buttons button {
+        font-size: 1em;
+        padding: 0.5em;
+        border-radius: 0.5em;
+        background-color: #4CAF50; /* Green */
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .arrow-buttons button:hover {
+        background-color: #3e8e41;
+    }
+    /* Positioning the buttons in the grid */
+    .arrow-up {
+        grid-column: 2; /* Center column */
+        grid-row: 1;    /* Top row */
+    }
+    .arrow-left {
+        grid-column: 1; /* Left column */
+        grid-row: 2;    /* Middle row */
+    }
+    .arrow-right {
+        grid-column: 3; /* Right column */
+        grid-row: 2;    /* Middle row */
+    }
+    .arrow-down {
+        grid-column: 2; /* Center column */
+        grid-row: 3;    /* Bottom row */
+    }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    button {
+        font-size: 1em; /* Bigger buttons */
+        padding: 0.5em 1em;
+        margin: 0.5em;
+        border-radius: 0.5em;
+    }
+    </style>
+    </head>
+    <body>
+    <div class="video-container">
+        <img src="{{ url_for('video_feed') }}">
+    </div>
+    <div class="controls-container">
+        <div class="arrow-buttons">
+            <button class="arrow-up" onclick="fetch('/tilt_step?direction=up')">&#8593;</button>
+            <button class="arrow-left" onclick="fetch('/pan_step?direction=left')">&#8592;</button>
+            <button class="arrow-right" onclick="fetch('/pan_step?direction=right')">&#8594;</button>
+            <button class="arrow-down" onclick="fetch('/tilt_step?direction=down')">&#8595;</button>
+        </div>
+        <button onclick="fetch('/solinoid_on')">Solenoid ON</button>
+        <button onclick="fetch('/solinoid_off')">Solenoid OFF</button>
+        <button onclick="fetch('/solinoid_pulse')">Solenoid Pulse</button>
+    </div>
+    </body>
+    </html>
+    """
+
+
 
 def gen_frames():
     while True:
@@ -177,19 +261,22 @@ def video_feed():
     return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/pan_step')
 def pan_step_route():
     direction = request.args.get('direction')
+    fine = request.args.get('fine') == 'true'
     if direction in ["left", "right"]:
-        step_servo_pan(direction)
+        step_servo_pan(direction, fine)
     return ("", 204)  # No content response
 
 @app.route('/tilt_step')
 def tilt_step_route():
     direction = request.args.get('direction')
+    fine = request.args.get('fine') == 'true'
     if direction in ["up", "down"]:
-        step_servo_tilt(direction)
-    return ("", 204)  # No content response
+        step_servo_tilt(direction, fine)
+        return ("", 204)  # No content response
 
 @app.route('/solinoid_on')
 def solinoid_on_route():
@@ -201,6 +288,10 @@ def solinoid_off_route():
     solinoid_off()
     return ("", 204)  # No content response
 
+@app.route('/solinoid_pulse')
+def solinoid_pulse_route():
+    solinoid_pulse()
+    return ("", 204)  # No content response
 
 
 if __name__ == '__main__':

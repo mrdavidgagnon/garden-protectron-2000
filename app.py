@@ -17,20 +17,39 @@ camera_config = picam2.create_video_configuration(main={"size": (1024, 760)})
 picam2.configure(camera_config)
 picam2.start()
 
-# Servo setup with pigpio
-SERVO_PIN_PAN = 24  # Replace with the GPIO pin connected to your servo
-SERVO_PIN_TILT = 23  # Replace with the GPIO pin connected to your servo
-GPIO_PWM_FREQUENCY = 50
-NEUTRAL_DC = 1500 # 90deg
-MIN_DC = 500 # 0deg
-MAX_DC = 2500 # 180deg
-CURRENT_PAN = NEUTRAL_DC
-CURRENT_TILT = NEUTRAL_DC
+# GPIO pin configuration for Motor 1
+DIR_PIN_1 = 20  # Direction pin for Motor 1
+STEP_PIN_1 = 21  # Step pin for Motor 1
+
+# GPIO pin configuration for Motor 2
+DIR_PIN_2 = 22  # Direction pin for Motor 2
+STEP_PIN_2 = 23  # Step pin for Motor 2
+
+# Initialize pigpio
 pi = pigpio.pi()
-pi.set_mode(SERVO_PIN_PAN, pigpio.OUTPUT)
-pi.set_servo_pulsewidth(SERVO_PIN_PAN, NEUTRAL_DC)
-pi.set_mode(SERVO_PIN_TILT, pigpio.OUTPUT)
-pi.set_servo_pulsewidth(SERVO_PIN_TILT, NEUTRAL_DC)
+if not pi.connected:
+    raise RuntimeError("Failed to connect to pigpio daemon")
+
+# Function to initialize the stepper drivers
+def initialize_steppers():
+    # Motor 1
+    pi.set_mode(DIR_PIN_1, pigpio.OUTPUT)
+    pi.set_mode(STEP_PIN_1, pigpio.OUTPUT)
+    pi.write(DIR_PIN_1, 0)  # Set default direction for Motor 1
+
+    # Motor 2
+    pi.set_mode(DIR_PIN_2, pigpio.OUTPUT)
+    pi.set_mode(STEP_PIN_2, pigpio.OUTPUT)
+    pi.write(DIR_PIN_2, 0)  # Set default direction for Motor 2
+
+# Function to rotate a motor
+def rotate_motor(dir_pin, step_pin, steps, delay, clockwise=True):
+    pi.write(dir_pin, 1 if clockwise else 0)  # Set direction
+    for _ in range(steps):
+        pi.write(step_pin, 1)
+        time.sleep(delay)
+        pi.write(step_pin, 0)
+        time.sleep(delay)
 
 # Solinoid setup 
 SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
@@ -69,31 +88,17 @@ def solinoid_auto(number):
         solinoid_pulse()
         time.sleep(.1)
 
-PAN_STEP_FINE = 10
-TILT_STEP_FINE = 10
-PAN_STEP = 50
-TILT_STEP = 50
 def step_servo_pan(direction, fine=False):
-    global CURRENT_PAN
-    step = PAN_STEP_FINE if fine else PAN_STEP
     if direction == "right":
-        CURRENT_PAN = max(MIN_DC, CURRENT_PAN - step)
-        pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, delay=0.0001, clockwise=True)
     elif direction == "left":
-        CURRENT_PAN = min(MAX_DC, CURRENT_PAN + step)
-        pi.set_servo_pulsewidth(SERVO_PIN_PAN, CURRENT_PAN)
-    print(f"Pan position: {CURRENT_PAN}")
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, delay=0.0001, clockwise=False)
 def step_servo_tilt(direction, fine=False):
-    global CURRENT_TILT
-    step = TILT_STEP_FINE if fine else TILT_STEP
     if direction == "up":
-        CURRENT_TILT = max(MIN_DC, CURRENT_TILT - step)
-        pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
+       rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, delay=0.0001, clockwise=True)
     elif direction == "down":
-        CURRENT_TILT = min(MAX_DC, CURRENT_TILT + step)
-        pi.set_servo_pulsewidth(SERVO_PIN_TILT, CURRENT_TILT)
-    print(f"Tilt position: {CURRENT_TILT}")
-        
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, delay=0.0001, clockwise=False)
+
 HTML_PAGE = """
     <html>
     <head>

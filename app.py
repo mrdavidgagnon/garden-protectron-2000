@@ -24,6 +24,7 @@ STEP_PIN_1 = 21  # Step pin for Motor 1
 # GPIO pin configuration for Motor 2
 DIR_PIN_2 = 22  # Direction pin for Motor 2
 STEP_PIN_2 = 23  # Step pin for Motor 2
+STEP_DELAY =  0.0001  # Delay between steps in seconds
 
 # Initialize pigpio
 pi = pigpio.pi()
@@ -43,13 +44,13 @@ def initialize_steppers():
     pi.write(DIR_PIN_2, 0)  # Set default direction for Motor 2
 
 # Function to rotate a motor
-def rotate_motor(dir_pin, step_pin, steps, delay, clockwise=True):
+def rotate_motor(dir_pin, step_pin, steps, clockwise=True):
     pi.write(dir_pin, 1 if clockwise else 0)  # Set direction
     for _ in range(steps):
         pi.write(step_pin, 1)
-        time.sleep(delay)
+        time.sleep(STEP_DELAY)
         pi.write(step_pin, 0)
-        time.sleep(delay)
+        time.sleep(STEP_DELAY)
 
 # Solinoid setup 
 SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
@@ -90,14 +91,14 @@ def solinoid_auto(number):
 
 def step_servo_pan(direction, fine=False):
     if direction == "right":
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, delay=0.0001, clockwise=True)
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=True)
     elif direction == "left":
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, delay=0.0001, clockwise=False)
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=False)
 def step_servo_tilt(direction, fine=False):
     if direction == "up":
-       rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, delay=0.0001, clockwise=True)
+       rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=True)
     elif direction == "down":
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, delay=0.0001, clockwise=False)
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=False)
 
 HTML_PAGE = """
     <html>

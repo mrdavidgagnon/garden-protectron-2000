@@ -42,8 +42,8 @@ gpio.setup(SOLINOID_PIN_2, gpio.OUT)
 gpio.output(SOLINOID_PIN, gpio.LOW)  # Set the solenoid to LOW (off)    
 gpio.output(SOLINOID_PIN_2, gpio.LOW)  # Set the solenoid to LOW (off)   
 
-SOLINOID_SET_TIME = .3  # Time in seconds to set the solenoid
-SOLINOID_PULSE_TIME = .5  # Time in seconds to set the solenoid
+SOLINOID_SET_TIME = .02  # Time in seconds to set the solenoid
+SOLINOID_PULSE_TIME = .02  # Time in seconds to set the solenoid
 
 def solinoid_off():
     gpio.output(SOLINOID_PIN, gpio.LOW)
@@ -63,6 +63,11 @@ def solinoid_pulse():
         solinoid_on()
         time.sleep(SOLINOID_PULSE_TIME)
         solinoid_off()
+
+def solinoid_auto(number):
+    for i in range(number):
+        solinoid_pulse()
+        time.sleep(.1)
 
 PAN_STEP_FINE = 10
 TILT_STEP_FINE = 10
@@ -180,6 +185,8 @@ HTML_PAGE = """
         <button onclick="fetch('/solinoid_on')">Solenoid ON</button>
         <button onclick="fetch('/solinoid_off')">Solenoid OFF</button>
         <button onclick="fetch('/solinoid_pulse')">Solenoid Pulse</button>
+        <button onclick="fetch('/solinoid_auto3')">Solenoid 3</button>
+        <button onclick="fetch('/solinoid_auto10')">Solenoid 10</button>
     </div>
     </body>
     </html>
@@ -293,6 +300,15 @@ def solinoid_pulse_route():
     solinoid_pulse()
     return ("", 204)  # No content response
 
+@app.route('/solinoid_auto3')
+def solinoid_auto3_route():
+    solinoid_auto(3)
+    return ("", 204)  # No content response
+
+@app.route('/solinoid_auto10')
+def solinoid_auto10_route():
+    solinoid_auto(10)
+    return ("", 204)  # No content response
 
 if __name__ == '__main__':
     try:

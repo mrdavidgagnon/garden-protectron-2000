@@ -43,28 +43,29 @@ if __name__ == "__main__":
         
         # Rotate Motor 1 clockwise
         print("Rotating Motor 1 clockwise...")
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00005, clockwise=True)
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00001, clockwise=True)
         
         # Pause
         time.sleep(1)
         
         # Rotate Motor 1 counterclockwise
         print("Rotating Motor 1 counterclockwise...")
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00005, clockwise=False)
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00001, clockwise=False)
         
         # Pause
         time.sleep(1)
         
         # Rotate Motor 2 clockwise
         print("Rotating Motor 2 clockwise...")
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00005, clockwise=True)
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00001, clockwise=True)
         
         # Pause
+
         time.sleep(1)
         
         # Rotate Motor 2 counterclockwise
         print("Rotating Motor 2 counterclockwise...")
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00005, clockwise=False)
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00001, clockwise=False)
         
         print("Demo complete.")
     except KeyboardInterrupt:

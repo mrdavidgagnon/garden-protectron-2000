@@ -1,51 +1,74 @@
 import time
 import pigpio
 
-# GPIO pin configuration
-DIR_PIN = 20  # Direction pin
-STEP_PIN = 21  # Step pin
+# GPIO pin configuration for Motor 1
+DIR_PIN_1 = 20  # Direction pin for Motor 1
+STEP_PIN_1 = 21  # Step pin for Motor 1
+
+# GPIO pin configuration for Motor 2
+DIR_PIN_2 = 22  # Direction pin for Motor 2
+STEP_PIN_2 = 23  # Step pin for Motor 2
 
 # Initialize pigpio
 pi = pigpio.pi()
 if not pi.connected:
     raise RuntimeError("Failed to connect to pigpio daemon")
 
-# Function to initialize the stepper driver
-def initialize_stepper():
-    pi.set_mode(DIR_PIN, pigpio.OUTPUT)
-    pi.set_mode(STEP_PIN, pigpio.OUTPUT)
-    
-    pi.write(DIR_PIN, 0)  # Set default direction (e.g., clockwise)
+# Function to initialize the stepper drivers
+def initialize_steppers():
+    # Motor 1
+    pi.set_mode(DIR_PIN_1, pigpio.OUTPUT)
+    pi.set_mode(STEP_PIN_1, pigpio.OUTPUT)
+    pi.write(DIR_PIN_1, 0)  # Set default direction for Motor 1
 
-# Function to rotate the motor
-def rotate_motor(steps, delay, clockwise=True):
-    pi.write(DIR_PIN, 1 if clockwise else 0)  # Set direction
+    # Motor 2
+    pi.set_mode(DIR_PIN_2, pigpio.OUTPUT)
+    pi.set_mode(STEP_PIN_2, pigpio.OUTPUT)
+    pi.write(DIR_PIN_2, 0)  # Set default direction for Motor 2
+
+# Function to rotate a motor
+def rotate_motor(dir_pin, step_pin, steps, delay, clockwise=True):
+    pi.write(dir_pin, 1 if clockwise else 0)  # Set direction
     for _ in range(steps):
-        pi.write(STEP_PIN, 1)
+        pi.write(step_pin, 1)
         time.sleep(delay)
-        pi.write(STEP_PIN, 0)
+        pi.write(step_pin, 0)
         time.sleep(delay)
 
 # Main demo
 if __name__ == "__main__":
     try:
-        initialize_stepper()
+        initialize_steppers()
         print("Stepper motor demo starting...")
         
-        # Rotate clockwise
-        print("Rotating clockwise...")
-        rotate_motor(steps=1000, delay=0.0001, clockwise=True)
+        # Rotate Motor 1 clockwise
+        print("Rotating Motor 1 clockwise...")
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00005, clockwise=True)
         
         # Pause
         time.sleep(1)
         
-        # Rotate counterclockwise
-        print("Rotating counterclockwise...")
-        rotate_motor(steps=1000, delay=0.0001, clockwise=False)
+        # Rotate Motor 1 counterclockwise
+        print("Rotating Motor 1 counterclockwise...")
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=1000, delay=0.00005, clockwise=False)
+        
+        # Pause
+        time.sleep(1)
+        
+        # Rotate Motor 2 clockwise
+        print("Rotating Motor 2 clockwise...")
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00005, clockwise=True)
+        
+        # Pause
+        time.sleep(1)
+        
+        # Rotate Motor 2 counterclockwise
+        print("Rotating Motor 2 counterclockwise...")
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=1000, delay=0.00005, clockwise=False)
         
         print("Demo complete.")
     except KeyboardInterrupt:
         print("Demo interrupted.")
     finally:
         pi.stop()  # Disconnect from pigpio
-        print("Stepper motor disabled.")
+        print("Stepper motors disabled.")

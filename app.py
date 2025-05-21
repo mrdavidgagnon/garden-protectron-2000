@@ -100,6 +100,9 @@ def step_servo_tilt(direction, fine=False):
     elif direction == "down":
         rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=False)
 
+# Global variable for motion area threshold (default 5000)
+MOTION_AREA_THRESHOLD = 5000
+
 HTML_PAGE = """
     <html>
     <head>
@@ -193,11 +196,16 @@ HTML_PAGE = """
         <button onclick="fetch('/solinoid_pulse')">Solenoid Pulse</button>
         <button onclick="fetch('/solinoid_auto3')">Solenoid 3</button>
         <button onclick="fetch('/solinoid_auto10')">Solenoid 10</button>
+    <div>
+        <label for="motion-threshold">Motion Area Threshold: <span id="threshold-value">{{ threshold }}</span></label>
+        <input type="range" min="50" max="20000" value="{{ threshold }}" id="motion-threshold" step="100" 
+               oninput="document.getElementById('threshold-value').innerText=this.value"
+               onchange="fetch('/set_motion_threshold?value='+this.value)">
+    </div>
     </div>
     </body>
     </html>
     """
-
 
 
 def gen_frames():
@@ -246,6 +254,32 @@ def gen_frames():
         text_y = int(height * (.95)) + text_size[1] // 2
         cv2.putText(frame, label, (text_x, text_y), font, font_scale, (0, 255, 0), font_thickness, cv2.LINE_AA)
 
+        # Convert frame to grayscale for motion detection
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+        # Use a static variable to store the previous frame
+        if not hasattr(gen_frames, "prev_gray"):
+            gen_frames.prev_gray = gray
+            motion_boxes = []
+        else:
+            # Compute absolute difference between current and previous frame
+            frame_delta = cv2.absdiff(gen_frames.prev_gray, gray)
+            thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+            thresh = cv2.dilate(thresh, None, iterations=2)
+
+            # Find contours of the thresholded image
+            contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            motion_boxes = []
+            for contour in contours:
+                if cv2.contourArea(contour) < MOTION_AREA_THRESHOLD:
+                    continue  # Ignore small movements
+                (x, y, w, h) = cv2.boundingRect(contour)
+                motion_boxes.append((x, y, w, h))
+                # Draw a green rectangle around the moving area
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+            gen_frames.prev_gray = gray
 
         ret, buffer = cv2.imencode('.jpg', frame)
         if not ret:
@@ -267,7 +301,7 @@ def gen_frames():
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_PAGE)
+    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD)
 
 @app.route('/video_feed')
 def video_feed():
@@ -316,6 +350,16 @@ def solinoid_auto10_route():
     solinoid_auto(10)
     return ("", 204)  # No content response
 
+@app.route('/set_motion_threshold')
+def set_motion_threshold():
+    global MOTION_AREA_THRESHOLD
+    try:
+        value = int(request.args.get('value', 5000))
+        MOTION_AREA_THRESHOLD = max(50, min(value, 50000))  # Clamp for safety, min now 50
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, threaded=True)
@@ -324,4 +368,4 @@ if __name__ == '__main__':
         pi.set_servo_pulsewidth(SERVO_PIN_PAN, 0)
         pi.set_servo_pulsewidth(SERVO_PIN_TILT, 0)
         pi.stop()
-        picam2.close()        
+        picam2.close()

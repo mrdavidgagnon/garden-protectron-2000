@@ -91,9 +91,9 @@ def solinoid_auto(number):
 
 def step_servo_pan(direction, fine=False):
     if direction == "right":
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=True)
-    elif direction == "left":
         rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=False)
+    elif direction == "left":
+        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=True)
 def step_servo_tilt(direction, fine=False):
     if direction == "up":
        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=True)

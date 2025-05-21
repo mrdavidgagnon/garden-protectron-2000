@@ -54,7 +54,7 @@ def rotate_motor(dir_pin, step_pin, steps, clockwise=True):
 
 # Solinoid setup 
 SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
-SOLINOID_PIN_2 = 27
+SOLINOID_PIN_2 = 18
 # Initialize GPIO
 gpio.setmode(gpio.BCM)
 gpio.setup(SOLINOID_PIN, gpio.OUT)
@@ -102,6 +102,13 @@ def step_servo_tilt(direction, fine=False):
 
 # Global variable for motion area threshold (default 5000)
 MOTION_AREA_THRESHOLD = 5000
+
+# Calibration: how many pixels in the image correspond to one step of the motor
+PIXELS_PER_STEP_PAN = 1   # Adjust experimentally
+PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
+
+# Add this global variable for the pause time (in seconds) after centering on motion
+MOTION_PAUSE_TIME = 1.0  # Default 1 second
 
 HTML_PAGE = """
     <html>
@@ -202,6 +209,12 @@ HTML_PAGE = """
                oninput="document.getElementById('threshold-value').innerText=this.value"
                onchange="fetch('/set_motion_threshold?value='+this.value)">
     </div>
+    <div>
+        <label for="motion-pause">Pause After Centering (s): <span id="pause-value">{{ pause_time }}</span></label>
+        <input type="range" min="0" max="5" value="{{ pause_time }}" id="motion-pause" step="0.1"
+               oninput="document.getElementById('pause-value').innerText=this.value"
+               onchange="fetch('/set_motion_pause?value='+this.value)">
+    </div>
     </div>
     </body>
     </html>
@@ -209,18 +222,24 @@ HTML_PAGE = """
 
 
 def gen_frames():
+    if not hasattr(gen_frames, "move_in_progress"):
+        gen_frames.move_in_progress = False
+    if not hasattr(gen_frames, "target_motion_box"):
+        gen_frames.target_motion_box = None
+    if not hasattr(gen_frames, "pause_until"):
+        gen_frames.pause_until = 0
+
     while True:
         frame = picam2.capture_array()
-
+        height, width, _ = frame.shape
+        center_x, center_y = width // 2, height // 2
 
         # superimpose the frame with a 5 px thick green line, 5% down from the top
-        height, width, _ = frame.shape
         line_thickness = 1
         line_y_position = int(height * 0.05)
         cv2.line(frame, (30, line_y_position), (width-30, line_y_position), (0, 255, 0), line_thickness)
 
         # Draw mil dot crosshairs in the center
-        center_x, center_y = width // 2, height // 2
         crosshair_length = 40  # length of crosshair lines
         dot_radius = 4         # radius of mil dots
         color = (0, 255, 0)
@@ -258,28 +277,69 @@ def gen_frames():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
-        # Use a static variable to store the previous frame
+        now = time.time()
         if not hasattr(gen_frames, "prev_gray"):
             gen_frames.prev_gray = gray
             motion_boxes = []
         else:
-            # Compute absolute difference between current and previous frame
-            frame_delta = cv2.absdiff(gen_frames.prev_gray, gray)
-            thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
-            thresh = cv2.dilate(thresh, None, iterations=2)
+            # If a move is in progress or we're in the pause period, skip motion detection and just update prev_gray
+            if gen_frames.move_in_progress or now < gen_frames.pause_until:
+                gen_frames.prev_gray = gray
+            else:
+                frame_delta = cv2.absdiff(gen_frames.prev_gray, gray)
+                thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+                thresh = cv2.dilate(thresh, None, iterations=2)
 
-            # Find contours of the thresholded image
-            contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            motion_boxes = []
-            for contour in contours:
-                if cv2.contourArea(contour) < MOTION_AREA_THRESHOLD:
-                    continue  # Ignore small movements
-                (x, y, w, h) = cv2.boundingRect(contour)
-                motion_boxes.append((x, y, w, h))
-                # Draw a green rectangle around the moving area
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+                contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                motion_boxes = []
+                for contour in contours:
+                    if cv2.contourArea(contour) < MOTION_AREA_THRESHOLD:
+                        continue
+                    (x, y, w, h) = cv2.boundingRect(contour)
+                    motion_boxes.append((x, y, w, h))
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-            gen_frames.prev_gray = gray
+                # If not already tracking a target, pick the largest box as the target
+                if not gen_frames.target_motion_box and motion_boxes:
+                    gen_frames.target_motion_box = max(motion_boxes, key=lambda b: b[2]*b[3])
+
+                # If we have a target, move to center on it and ignore all other motion until done
+                if gen_frames.target_motion_box:
+                    gen_frames.move_in_progress = True  # Set flag before moving
+
+                    x, y, w, h = gen_frames.target_motion_box
+                    target_x = x + w // 2
+                    target_y = y + h // 2
+
+                    offset_x = target_x - center_x
+                    offset_y = target_y - center_y
+
+                    steps_pan = int(abs(offset_x) / PIXELS_PER_STEP_PAN)
+                    steps_tilt = int(abs(offset_y) / PIXELS_PER_STEP_TILT)
+
+                    # Move pan (left/right)
+                    if steps_pan > 0:
+                        if offset_x > 0:
+                            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=False)
+                        else:
+                            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=True)
+
+                    # Move tilt (up/down)
+                    if steps_tilt > 0:
+                        if offset_y > 0:
+                            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=False)
+                        else:
+                            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=True)
+
+                    # After moving, clear the target and pause further tracking
+                    gen_frames.target_motion_box = None
+                    gen_frames.move_in_progress = False
+                    gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
+
+                    # Fire the solenoid 3 times after centering on motion
+                    solinoid_auto(3)
+
+                gen_frames.prev_gray = gray
 
         ret, buffer = cv2.imencode('.jpg', frame)
         if not ret:
@@ -301,7 +361,7 @@ def gen_frames():
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD)
+    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD, pause_time=MOTION_PAUSE_TIME)
 
 @app.route('/video_feed')
 def video_feed():
@@ -356,6 +416,16 @@ def set_motion_threshold():
     try:
         value = int(request.args.get('value', 5000))
         MOTION_AREA_THRESHOLD = max(50, min(value, 50000))  # Clamp for safety, min now 50
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
+@app.route('/set_motion_pause')
+def set_motion_pause():
+    global MOTION_PAUSE_TIME
+    try:
+        value = float(request.args.get('value', 1.0))
+        MOTION_PAUSE_TIME = max(0, min(value, 10))  # Clamp between 0 and 10 seconds
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)

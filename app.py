@@ -110,6 +110,9 @@ PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 # Add this global variable for the pause time (in seconds) after centering on motion
 MOTION_PAUSE_TIME = 1.0  # Default 1 second
 
+# Add this global variable to enable/disable auto movement
+AUTO_MOTION_ENABLED = True
+
 HTML_PAGE = """
     <html>
     <head>
@@ -215,7 +218,17 @@ HTML_PAGE = """
                oninput="document.getElementById('pause-value').innerText=this.value"
                onchange="fetch('/set_motion_pause?value='+this.value)">
     </div>
+    <div>
+        <label for="auto-motion">Auto Movement:</label>
+        <button id="auto-motion-btn" onclick="toggleAutoMotion()">{{ 'ON' if auto_motion else 'OFF' }}</button>
     </div>
+    </div>
+    <script>
+    function toggleAutoMotion() {
+        fetch('/toggle_auto_motion')
+          .then(() => location.reload());
+    }
+    </script>
     </body>
     </html>
     """
@@ -299,45 +312,47 @@ def gen_frames():
                     motion_boxes.append((x, y, w, h))
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-                # If not already tracking a target, pick the largest box as the target
-                if not gen_frames.target_motion_box and motion_boxes:
-                    gen_frames.target_motion_box = max(motion_boxes, key=lambda b: b[2]*b[3])
+                # Only perform auto-move if enabled
+                if AUTO_MOTION_ENABLED:
+                    # If not already tracking a target, pick the largest box as the target
+                    if not gen_frames.target_motion_box and motion_boxes:
+                        gen_frames.target_motion_box = max(motion_boxes, key=lambda b: b[2]*b[3])
 
-                # If we have a target, move to center on it and ignore all other motion until done
-                if gen_frames.target_motion_box:
-                    gen_frames.move_in_progress = True  # Set flag before moving
+                    # If we have a target, move to center on it and ignore all other motion until done
+                    if gen_frames.target_motion_box:
+                        gen_frames.move_in_progress = True  # Set flag before moving
 
-                    x, y, w, h = gen_frames.target_motion_box
-                    target_x = x + w // 2
-                    target_y = y + h // 2
+                        x, y, w, h = gen_frames.target_motion_box
+                        target_x = x + w // 2
+                        target_y = y + h // 2
 
-                    offset_x = target_x - center_x
-                    offset_y = target_y - center_y
+                        offset_x = target_x - center_x
+                        offset_y = target_y - center_y
 
-                    steps_pan = int(abs(offset_x) / PIXELS_PER_STEP_PAN)
-                    steps_tilt = int(abs(offset_y) / PIXELS_PER_STEP_TILT)
+                        steps_pan = int(abs(offset_x) / PIXELS_PER_STEP_PAN)
+                        steps_tilt = int(abs(offset_y) / PIXELS_PER_STEP_TILT)
 
-                    # Move pan (left/right)
-                    if steps_pan > 0:
-                        if offset_x > 0:
-                            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=False)
-                        else:
-                            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=True)
+                        # Move pan (left/right)
+                        if steps_pan > 0:
+                            if offset_x > 0:
+                                rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=False)
+                            else:
+                                rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=True)
 
-                    # Move tilt (up/down)
-                    if steps_tilt > 0:
-                        if offset_y > 0:
-                            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=False)
-                        else:
-                            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=True)
+                        # Move tilt (up/down)
+                        if steps_tilt > 0:
+                            if offset_y > 0:
+                                rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=False)
+                            else:
+                                rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=True)
 
-                    # After moving, clear the target and pause further tracking
-                    gen_frames.target_motion_box = None
-                    gen_frames.move_in_progress = False
-                    gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
+                        # After moving, clear the target and pause further tracking
+                        gen_frames.target_motion_box = None
+                        gen_frames.move_in_progress = False
+                        gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
 
-                    # Fire the solenoid 3 times after centering on motion
-                    solinoid_auto(3)
+                        # Fire the solenoid 3 times after centering on motion
+                        solinoid_auto(3)
 
                 gen_frames.prev_gray = gray
 
@@ -361,7 +376,7 @@ def gen_frames():
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD, pause_time=MOTION_PAUSE_TIME)
+    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD, pause_time=MOTION_PAUSE_TIME, auto_motion=AUTO_MOTION_ENABLED)
 
 @app.route('/video_feed')
 def video_feed():
@@ -429,6 +444,12 @@ def set_motion_pause():
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
+
+@app.route('/toggle_auto_motion')
+def toggle_auto_motion():
+    global AUTO_MOTION_ENABLED
+    AUTO_MOTION_ENABLED = not AUTO_MOTION_ENABLED
+    return ("", 204)
 
 if __name__ == '__main__':
     try:

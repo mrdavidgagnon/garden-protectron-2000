@@ -23,6 +23,31 @@ DIR_PIN_2 = 22  # Direction pin for Motor 2
 STEP_PIN_2 = 23  # Step pin for Motor 2
 STEP_DELAY =  0.0001  # Delay between steps in seconds
 
+# Solinoid setup 
+SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
+SOLINOID_PIN_2 = 18
+# Initialize GPIO
+gpio.setmode(gpio.BCM)
+gpio.setup(SOLINOID_PIN, gpio.OUT)
+gpio.setup(SOLINOID_PIN_2, gpio.OUT)
+gpio.output(SOLINOID_PIN, gpio.LOW)  # Set the solenoid to LOW (off)    
+gpio.output(SOLINOID_PIN_2, gpio.LOW)  # Set the solenoid to LOW (off)   
+SOLINOID_SET_TIME = .02  # Time in seconds to set the solenoid
+SOLINOID_PULSE_TIME = .02  # Time in seconds to set the solenoid
+
+# Add these global variables to track pan and tilt position (in steps)
+PAN_POSITION = 0
+TILT_POSITION = 0
+
+# Set pan limits (move to global scope for reuse)
+PAN_MIN = -2000
+PAN_MAX = 2000
+
+# Set tilt limits (move to global scope for reuse)
+TILT_MIN = -800
+TILT_MAX = 1000
+
+
 # Initialize pigpio
 pi = pigpio.pi()
 if not pi.connected:
@@ -49,19 +74,6 @@ def rotate_motor(dir_pin, step_pin, steps, clockwise=True):
         pi.write(step_pin, 0)
         time.sleep(STEP_DELAY)
 
-# Solinoid setup 
-SOLINOID_PIN = 17  # Replace with the GPIO pin connected to your solenoid
-SOLINOID_PIN_2 = 18
-# Initialize GPIO
-gpio.setmode(gpio.BCM)
-gpio.setup(SOLINOID_PIN, gpio.OUT)
-gpio.setup(SOLINOID_PIN_2, gpio.OUT)
-gpio.output(SOLINOID_PIN, gpio.LOW)  # Set the solenoid to LOW (off)    
-gpio.output(SOLINOID_PIN_2, gpio.LOW)  # Set the solenoid to LOW (off)   
-
-SOLINOID_SET_TIME = .02  # Time in seconds to set the solenoid
-SOLINOID_PULSE_TIME = .02  # Time in seconds to set the solenoid
-
 def solinoid_off():
     gpio.output(SOLINOID_PIN, gpio.LOW)
     gpio.output(SOLINOID_PIN_2, gpio.HIGH)
@@ -86,17 +98,6 @@ def solinoid_auto(number):
         solinoid_pulse()
         time.sleep(.1)
 
-# Add these global variables to track pan and tilt position (in steps)
-PAN_POSITION = 0
-TILT_POSITION = 0
-
-# Set pan limits (move to global scope for reuse)
-PAN_MIN = -2000
-PAN_MAX = 2000
-
-# Set tilt limits (move to global scope for reuse)
-TILT_MIN = -800
-TILT_MAX = 1000
 
 def step_servo_pan(direction, fine=False):
     global PAN_POSITION
@@ -284,15 +285,13 @@ HTML_PAGE = """
 
 
 def gen_frames():
+    global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX
     if not hasattr(gen_frames, "move_in_progress"):
         gen_frames.move_in_progress = False
     if not hasattr(gen_frames, "target_motion_box"):
         gen_frames.target_motion_box = None
     if not hasattr(gen_frames, "pause_until"):
         gen_frames.pause_until = 0
-
-    # Pan limits for overlay (reuse global PAN_MIN and PAN_MAX)
-    global PAN_MIN, PAN_MAX
 
     while True:
         frame = picam2.capture_array()
@@ -332,6 +331,37 @@ def gen_frames():
         ], np.int32)
         cv2.fillPoly(frame, [pts], line_color)
 
+        # --- Draw tilt range line and current position triangle ---
+        # Vertical line on the left 5% of the video
+        tilt_line_x = int(width * 0.05)
+        tilt_line_y1 = int(height * 0.10)  # 10% from top
+        tilt_line_y2 = int(height * 0.90)  # 10% from bottom
+
+        # Draw the tilt range line
+        cv2.line(frame, (tilt_line_x, tilt_line_y1), (tilt_line_x, tilt_line_y2), line_color, line_thickness)
+
+        # Map TILT_POSITION to the line
+        tilt_range = TILT_MAX - TILT_MIN
+        if tilt_range == 0:
+            tilt_pos_y = tilt_line_y2
+        else:
+            # When TILT_POSITION == TILT_MAX, tilt_pos_y == tilt_line_y1 (top)
+            # When TILT_POSITION == TILT_MIN, tilt_pos_y == tilt_line_y2 (bottom)
+            tilt_pos_y = int(
+                tilt_line_y1 + (TILT_MAX - TILT_POSITION) / (TILT_MAX - TILT_MIN) * (tilt_line_y2 - tilt_line_y1)
+            )
+        tilt_pos_y = max(tilt_line_y1, min(tilt_pos_y, tilt_line_y2))
+
+        # Draw a small green triangle for current tilt position (pointing right at the line)
+        tilt_triangle_height = 16
+        tilt_triangle_half_width = 8
+        tilt_pts = np.array([
+            [tilt_line_x, tilt_pos_y],  # tip at the line
+            [tilt_line_x - tilt_triangle_height, tilt_pos_y - tilt_triangle_half_width],  # upper left
+            [tilt_line_x - tilt_triangle_height, tilt_pos_y + tilt_triangle_half_width],  # lower left
+        ], np.int32)
+        cv2.fillPoly(frame, [tilt_pts], line_color)
+
         # --- Existing overlays (crosshairs, label, pan/tilt text, etc.) ---
         crosshair_length = 40
         dot_radius = 4
@@ -363,9 +393,25 @@ def gen_frames():
         text_y = int(height * (.95)) + text_size[1] // 2
         cv2.putText(frame, label, (text_x, text_y), font, font_scale, (0, 255, 0), font_thickness, cv2.LINE_AA)
 
-        # Overlay pan/tilt position in the top left corner
-        pos_text = f"Pan: {PAN_POSITION}  Tilt: {TILT_POSITION}"
-        cv2.putText(frame, pos_text, (30, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
+        # Overlay pan/tilt position in the top right corner, small green Courier font
+        pos_text = f"Pan: {PAN_POSITION}"
+        tilt_text = f"Tilt: {TILT_POSITION}"
+        font = cv2.FONT_HERSHEY_SIMPLEX  # OpenCV doesn't have Courier, but this is monospaced-like
+        font_scale = 0.7
+        font_thickness = 1
+        text_color = (0, 255, 0)
+
+        # Calculate positions for right-aligned text
+        margin = 20
+        pos_size, _ = cv2.getTextSize(pos_text, font, font_scale, font_thickness)
+        tilt_size, _ = cv2.getTextSize(tilt_text, font, font_scale, font_thickness)
+        pos_x = width - pos_size[0] - margin
+        tilt_x = width - tilt_size[0] - margin
+        pos_y = 40
+        tilt_y = pos_y + pos_size[1] + 10
+
+        cv2.putText(frame, pos_text, (pos_x, pos_y), font, font_scale, text_color, font_thickness, cv2.LINE_AA)
+        cv2.putText(frame, tilt_text, (tilt_x, tilt_y), font, font_scale, text_color, font_thickness, cv2.LINE_AA)
 
         # Convert frame to grayscale for motion detection
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -413,19 +459,23 @@ def gen_frames():
                         steps_pan = int(abs(offset_x) / PIXELS_PER_STEP_PAN)
                         steps_tilt = int(abs(offset_y) / PIXELS_PER_STEP_TILT)
 
-                        # Move pan (left/right)
+                        # Move pan (left/right) and update PAN_POSITION within limits
                         if steps_pan > 0:
                             if offset_x > 0:
                                 rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=False)
+                                PAN_POSITION = max(PAN_MIN, PAN_POSITION - steps_pan)
                             else:
                                 rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps_pan, clockwise=True)
+                                PAN_POSITION = min(PAN_MAX, PAN_POSITION + steps_pan)
 
-                        # Move tilt (up/down)
+                        # Move tilt (up/down) and update TILT_POSITION within limits
                         if steps_tilt > 0:
                             if offset_y > 0:
                                 rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=False)
+                                TILT_POSITION = max(TILT_MIN, TILT_POSITION - steps_tilt)
                             else:
                                 rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps_tilt, clockwise=True)
+                                TILT_POSITION = min(TILT_MAX, TILT_POSITION + steps_tilt)
 
                         # After moving, clear the target and pause further tracking
                         gen_frames.target_motion_box = None

@@ -89,16 +89,39 @@ def solinoid_auto(number):
         solinoid_pulse()
         time.sleep(.1)
 
+# Add these global variables to track pan and tilt position (in steps)
+PAN_POSITION = 0
+TILT_POSITION = 0
+
 def step_servo_pan(direction, fine=False):
+    global PAN_POSITION
+    steps = 100
+    # Set pan limits
+    PAN_MIN = -800
+    PAN_MAX = 1000
+
     if direction == "right":
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=False)
+        if PAN_POSITION - steps >= PAN_MIN:
+            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=False)
+            PAN_POSITION -= steps
+        else:
+            PAN_POSITION = PAN_MIN
     elif direction == "left":
-        rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=100, clockwise=True)
+        if PAN_POSITION + steps <= PAN_MAX:
+            rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=True)
+            PAN_POSITION += steps
+        else:
+            PAN_POSITION = PAN_MAX
+
 def step_servo_tilt(direction, fine=False):
+    global TILT_POSITION
+    steps = 100
     if direction == "up":
-       rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=True)
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps, clockwise=True)
+        TILT_POSITION += steps
     elif direction == "down":
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=100, clockwise=False)
+        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps,clockwise=False)
+        TILT_POSITION -= steps
 
 # Global variable for motion area threshold (default 5000)
 MOTION_AREA_THRESHOLD = 5000
@@ -112,6 +135,9 @@ MOTION_PAUSE_TIME = 1.0  # Default 1 second
 
 # Add this global variable to enable/disable auto movement
 AUTO_MOTION_ENABLED = False
+
+# Add this global variable to enable/disable auto fire after auto movement
+AUTO_FIRE_ENABLED = False
 
 HTML_PAGE = """
     <html>
@@ -188,6 +214,14 @@ HTML_PAGE = """
         margin: 0.5em;
         border-radius: 0.5em;
     }
+    .reset-center {
+        grid-column: 2;
+        grid-row: 2;
+        background-color: #2196F3;
+    }
+    .reset-center:hover {
+        background-color: #1769aa;
+    }
     </style>
     </head>
     <body>
@@ -198,11 +232,12 @@ HTML_PAGE = """
         <div class="arrow-buttons">
             <button class="arrow-up" onclick="fetch('/tilt_step?direction=up')">&#8593;</button>
             <button class="arrow-left" onclick="fetch('/pan_step?direction=left')">&#8592;</button>
+            <button class="reset-center" onclick="fetch('/calibrate_pan_tilt')">&#9679;</button>
             <button class="arrow-right" onclick="fetch('/pan_step?direction=right')">&#8594;</button>
             <button class="arrow-down" onclick="fetch('/tilt_step?direction=down')">&#8595;</button>
         </div>
-        <button onclick="fetch('/solinoid_pulse')">Solenoid Pulse</button>
-        <button onclick="fetch('/solinoid_auto3')">Solenoid 3</button>
+        <button onclick="fetch('/solinoid_pulse')">Single Fire</button>
+        <button onclick="fetch('/solinoid_auto3')">Pulse Fire</button>
     <div>
         <label for="motion-threshold">Motion Area Threshold: <span id="threshold-value">{{ threshold }}</span></label>
         <input type="range" min="50" max="5000" value="{{ threshold }}" id="motion-threshold" step="100" 
@@ -219,10 +254,18 @@ HTML_PAGE = """
         <label for="auto-motion">Auto Movement:</label>
         <button id="auto-motion-btn" onclick="toggleAutoMotion()">{{ 'ON' if auto_motion else 'OFF' }}</button>
     </div>
+    <div>
+        <label for="auto-fire">Auto Fire:</label>
+        <button id="auto-fire-btn" onclick="toggleAutoFire()">{{ 'ON' if auto_fire else 'OFF' }}</button>
+    </div>
     </div>
     <script>
     function toggleAutoMotion() {
         fetch('/toggle_auto_motion')
+          .then(() => location.reload());
+    }
+    function toggleAutoFire() {
+        fetch('/toggle_auto_fire')
           .then(() => location.reload());
     }
     </script>
@@ -282,6 +325,10 @@ def gen_frames():
         text_x = (width - text_size[0]) // 2
         text_y = int(height * (.95)) + text_size[1] // 2
         cv2.putText(frame, label, (text_x, text_y), font, font_scale, (0, 255, 0), font_thickness, cv2.LINE_AA)
+
+        # Overlay pan/tilt position in the top left corner
+        pos_text = f"Pan: {PAN_POSITION}  Tilt: {TILT_POSITION}"
+        cv2.putText(frame, pos_text, (30, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
 
         # Convert frame to grayscale for motion detection
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -348,8 +395,9 @@ def gen_frames():
                         gen_frames.move_in_progress = False
                         gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
 
-                        # Fire the solenoid 3 times after centering on motion
-                        solinoid_auto(3)
+                        # Fire the solenoid 3 times after centering on motion, only if auto fire is enabled
+                        if AUTO_FIRE_ENABLED:
+                            solinoid_auto(3)
 
                 gen_frames.prev_gray = gray
 
@@ -373,7 +421,13 @@ def gen_frames():
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_PAGE, threshold=MOTION_AREA_THRESHOLD, pause_time=MOTION_PAUSE_TIME, auto_motion=AUTO_MOTION_ENABLED)
+    return render_template_string(
+        HTML_PAGE,
+        threshold=MOTION_AREA_THRESHOLD,
+        pause_time=MOTION_PAUSE_TIME,
+        auto_motion=AUTO_MOTION_ENABLED,
+        auto_fire=AUTO_FIRE_ENABLED
+    )
 
 @app.route('/video_feed')
 def video_feed():
@@ -432,6 +486,19 @@ def set_motion_pause():
 def toggle_auto_motion():
     global AUTO_MOTION_ENABLED
     AUTO_MOTION_ENABLED = not AUTO_MOTION_ENABLED
+    return ("", 204)
+
+@app.route('/toggle_auto_fire')
+def toggle_auto_fire():
+    global AUTO_FIRE_ENABLED
+    AUTO_FIRE_ENABLED = not AUTO_FIRE_ENABLED
+    return ("", 204)
+
+@app.route('/calibrate_pan_tilt')
+def calibrate_pan_tilt():
+    global PAN_POSITION, TILT_POSITION
+    PAN_POSITION = 0
+    TILT_POSITION = 0
     return ("", 204)
 
 if __name__ == '__main__':

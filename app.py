@@ -97,8 +97,8 @@ def step_servo_pan(direction, fine=False):
     global PAN_POSITION
     steps = 100
     # Set pan limits
-    PAN_MIN = -800
-    PAN_MAX = 1000
+    PAN_MIN = -2000
+    PAN_MAX = 2000
 
     if direction == "right":
         if PAN_POSITION - steps >= PAN_MIN:
@@ -116,12 +116,22 @@ def step_servo_pan(direction, fine=False):
 def step_servo_tilt(direction, fine=False):
     global TILT_POSITION
     steps = 100
+    # Set tilt limits
+    TILT_MIN = -800
+    TILT_MAX = 1000
+
     if direction == "up":
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps, clockwise=True)
-        TILT_POSITION += steps
+        if TILT_POSITION + steps <= TILT_MAX:
+            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps, clockwise=True)
+            TILT_POSITION += steps
+        else:
+            TILT_POSITION = TILT_MAX
     elif direction == "down":
-        rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps,clockwise=False)
-        TILT_POSITION -= steps
+        if TILT_POSITION - steps >= TILT_MIN:
+            rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps, clockwise=False)
+            TILT_POSITION -= steps
+        else:
+            TILT_POSITION = TILT_MIN
 
 # Global variable for motion area threshold (default 5000)
 MOTION_AREA_THRESHOLD = 5000

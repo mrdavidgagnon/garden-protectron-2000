@@ -201,11 +201,8 @@ HTML_PAGE = """
             <button class="arrow-right" onclick="fetch('/pan_step?direction=right')">&#8594;</button>
             <button class="arrow-down" onclick="fetch('/tilt_step?direction=down')">&#8595;</button>
         </div>
-        <button onclick="fetch('/solinoid_on')">Solenoid ON</button>
-        <button onclick="fetch('/solinoid_off')">Solenoid OFF</button>
         <button onclick="fetch('/solinoid_pulse')">Solenoid Pulse</button>
         <button onclick="fetch('/solinoid_auto3')">Solenoid 3</button>
-        <button onclick="fetch('/solinoid_auto10')">Solenoid 10</button>
     <div>
         <label for="motion-threshold">Motion Area Threshold: <span id="threshold-value">{{ threshold }}</span></label>
         <input type="range" min="50" max="5000" value="{{ threshold }}" id="motion-threshold" step="100" 
@@ -400,15 +397,6 @@ def tilt_step_route():
         step_servo_tilt(direction, fine)
         return ("", 204)  # No content response
 
-@app.route('/solinoid_on')
-def solinoid_on_route():
-    solinoid_on()
-    return ("", 204)  # No content response
-
-@app.route('/solinoid_off')
-def solinoid_off_route():
-    solinoid_off()
-    return ("", 204)  # No content response
 
 @app.route('/solinoid_pulse')
 def solinoid_pulse_route():
@@ -418,11 +406,6 @@ def solinoid_pulse_route():
 @app.route('/solinoid_auto3')
 def solinoid_auto3_route():
     solinoid_auto(3)
-    return ("", 204)  # No content response
-
-@app.route('/solinoid_auto10')
-def solinoid_auto10_route():
-    solinoid_auto(10)
     return ("", 204)  # No content response
 
 @app.route('/set_motion_threshold')

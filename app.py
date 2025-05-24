@@ -17,11 +17,11 @@ camera_config = picam2.create_video_configuration(main={"size": (1024, 760)})
 picam2.configure(camera_config)
 picam2.start()
 
-# GPIO pin configuration for Motor 1
+# GPIO pin configuration for Motor 1 PAN
 DIR_PIN_1 = 20  # Direction pin for Motor 1
 STEP_PIN_1 = 21  # Step pin for Motor 1
 
-# GPIO pin configuration for Motor 2
+# GPIO pin configuration for Motor 2 TILT
 DIR_PIN_2 = 22  # Direction pin for Motor 2
 STEP_PIN_2 = 23  # Step pin for Motor 2
 STEP_DELAY =  0.0001  # Delay between steps in seconds
@@ -208,13 +208,13 @@ HTML_PAGE = """
         <button onclick="fetch('/solinoid_auto10')">Solenoid 10</button>
     <div>
         <label for="motion-threshold">Motion Area Threshold: <span id="threshold-value">{{ threshold }}</span></label>
-        <input type="range" min="50" max="20000" value="{{ threshold }}" id="motion-threshold" step="100" 
+        <input type="range" min="50" max="5000" value="{{ threshold }}" id="motion-threshold" step="100" 
                oninput="document.getElementById('threshold-value').innerText=this.value"
                onchange="fetch('/set_motion_threshold?value='+this.value)">
     </div>
     <div>
         <label for="motion-pause">Pause After Centering (s): <span id="pause-value">{{ pause_time }}</span></label>
-        <input type="range" min="0" max="5" value="{{ pause_time }}" id="motion-pause" step="0.1"
+        <input type="range" min="0" max="2" value="{{ pause_time }}" id="motion-pause" step="0.1"
                oninput="document.getElementById('pause-value').innerText=this.value"
                onchange="fetch('/set_motion_pause?value='+this.value)">
     </div>
@@ -430,7 +430,7 @@ def set_motion_threshold():
     global MOTION_AREA_THRESHOLD
     try:
         value = int(request.args.get('value', 5000))
-        MOTION_AREA_THRESHOLD = max(50, min(value, 50000))  # Clamp for safety, min now 50
+        MOTION_AREA_THRESHOLD = max(50, min(value, 5000))  # Clamp for safety, min 50, max 5000
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
@@ -440,7 +440,7 @@ def set_motion_pause():
     global MOTION_PAUSE_TIME
     try:
         value = float(request.args.get('value', 1.0))
-        MOTION_PAUSE_TIME = max(0, min(value, 10))  # Clamp between 0 and 10 seconds
+        MOTION_PAUSE_TIME = max(0, min(value, 2))  # Clamp between 0 and 2 seconds
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
@@ -456,7 +456,5 @@ if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000, threaded=True)
     finally:
         # Cleanup GPIO and pigpio on exit
-        pi.set_servo_pulsewidth(SERVO_PIN_PAN, 0)
-        pi.set_servo_pulsewidth(SERVO_PIN_TILT, 0)
         pi.stop()
         picam2.close()

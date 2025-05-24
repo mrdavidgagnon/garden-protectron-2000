@@ -111,7 +111,7 @@ PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 MOTION_PAUSE_TIME = 1.0  # Default 1 second
 
 # Add this global variable to enable/disable auto movement
-AUTO_MOTION_ENABLED = True
+AUTO_MOTION_ENABLED = False
 
 HTML_PAGE = """
     <html>

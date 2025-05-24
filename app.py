@@ -1,13 +1,10 @@
-from flask import Flask, Response, render_template_string
-from picamera2 import Picamera2, Preview
-import cv2
-
 import RPi.GPIO as gpio
 import pigpio
 import time
 from flask import Flask, Response, render_template_string, request
 from picamera2 import Picamera2, Preview
 import cv2
+import numpy as np
 
 app = Flask(__name__)
 
@@ -93,12 +90,17 @@ def solinoid_auto(number):
 PAN_POSITION = 0
 TILT_POSITION = 0
 
+# Set pan limits (move to global scope for reuse)
+PAN_MIN = -2000
+PAN_MAX = 2000
+
+# Set tilt limits (move to global scope for reuse)
+TILT_MIN = -800
+TILT_MAX = 1000
+
 def step_servo_pan(direction, fine=False):
     global PAN_POSITION
     steps = 100
-    # Set pan limits
-    PAN_MIN = -2000
-    PAN_MAX = 2000
 
     if direction == "right":
         if PAN_POSITION - steps >= PAN_MIN:
@@ -116,9 +118,6 @@ def step_servo_pan(direction, fine=False):
 def step_servo_tilt(direction, fine=False):
     global TILT_POSITION
     steps = 100
-    # Set tilt limits
-    TILT_MIN = -800
-    TILT_MAX = 1000
 
     if direction == "up":
         if TILT_POSITION + steps <= TILT_MAX:
@@ -292,19 +291,50 @@ def gen_frames():
     if not hasattr(gen_frames, "pause_until"):
         gen_frames.pause_until = 0
 
+    # Pan limits for overlay (reuse global PAN_MIN and PAN_MAX)
+    global PAN_MIN, PAN_MAX
+
     while True:
         frame = picam2.capture_array()
         height, width, _ = frame.shape
         center_x, center_y = width // 2, height // 2
 
-        # superimpose the frame with a 5 px thick green line, 5% down from the top
-        line_thickness = 1
-        line_y_position = int(height * 0.05)
-        cv2.line(frame, (30, line_y_position), (width-30, line_y_position), (0, 255, 0), line_thickness)
+        # --- Draw pan range line and current position triangle ---
+        line_y = int(height * 0.05)
+        # Only use the middle 50% of the screen for the line (leaving 25% margin on each side)
+        line_x1 = int(width * 0.25)
+        line_x2 = int(width * 0.75)
+        line_color = (0, 255, 0)
+        line_thickness = 3
 
-        # Draw mil dot crosshairs in the center
-        crosshair_length = 40  # length of crosshair lines
-        dot_radius = 4         # radius of mil dots
+        # Draw the pan range line
+        cv2.line(frame, (line_x1, line_y), (line_x2, line_y), line_color, line_thickness)
+
+        # Map PAN_POSITION to the line
+        pan_range = PAN_MAX - PAN_MIN
+        if pan_range == 0:
+            pan_pos_x = line_x1
+        else:
+            # When PAN_POSITION == PAN_MAX, pan_pos_x == line_x1 (left edge)
+            # When PAN_POSITION == PAN_MIN, pan_pos_x == line_x2 (right edge)
+            pan_pos_x = int(
+                line_x1 + (PAN_MAX - PAN_POSITION) / (PAN_MAX - PAN_MIN) * (line_x2 - line_x1)
+            )
+        pan_pos_x = max(line_x1, min(pan_pos_x, line_x2))
+
+        # Draw a small green triangle for current pan position
+        triangle_height = 16
+        triangle_half_width = 8
+        pts = np.array([
+            [pan_pos_x, line_y + triangle_height],  # bottom point
+            [pan_pos_x - triangle_half_width, line_y],  # left point
+            [pan_pos_x + triangle_half_width, line_y],  # right point
+        ], np.int32)
+        cv2.fillPoly(frame, [pts], line_color)
+
+        # --- Existing overlays (crosshairs, label, pan/tilt text, etc.) ---
+        crosshair_length = 40
+        dot_radius = 4
         color = (0, 255, 0)
         thickness = 2
 
@@ -315,14 +345,11 @@ def gen_frames():
 
         # Mil dots: center and at 1/3 and 2/3 of crosshair length from center
         for offset in [0, crosshair_length // 3, 2 * crosshair_length // 3]:
-            # Center dot
             if offset == 0:
                 cv2.circle(frame, (center_x, center_y), dot_radius, color, -1)
             else:
-                # Horizontal dots
                 cv2.circle(frame, (center_x - offset, center_y), dot_radius, color, -1)
                 cv2.circle(frame, (center_x + offset, center_y), dot_radius, color, -1)
-                # Vertical dots
                 cv2.circle(frame, (center_x, center_y - offset), dot_radius, color, -1)
                 cv2.circle(frame, (center_x, center_y + offset), dot_radius, color, -1)
 

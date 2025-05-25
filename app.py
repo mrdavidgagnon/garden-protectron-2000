@@ -141,13 +141,19 @@ PIXELS_PER_STEP_PAN = 1   # Adjust experimentally
 PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 
 # Add this global variable for the pause time (in seconds) after centering on motion
-MOTION_PAUSE_TIME = 1.0  # Default 1 second
+MOTION_PAUSE_TIME = 2.0  # Default 2 seconds
 
 # Add this global variable to enable/disable auto movement
 AUTO_MOTION_ENABLED = False
 
 # Add this global variable to enable/disable auto fire after auto movement
 AUTO_FIRE_ENABLED = False
+
+# Add this global variable for the pause time (in seconds) before starting auto move
+PRE_MOVE_PAUSE_TIME = 0.0  # Default pause before auto move (seconds)
+
+# Add this global variable to pause auto features during manual override
+MANUAL_OVERRIDE_PAUSE_UNTIL = 0  # Timestamp until which auto features are paused
 
 HTML_PAGE = """
     <html>
@@ -256,9 +262,15 @@ HTML_PAGE = """
     </div>
     <div>
         <label for="motion-pause">Pause After Centering (s): <span id="pause-value">{{ pause_time }}</span></label>
-        <input type="range" min="0" max="2" value="{{ pause_time }}" id="motion-pause" step="0.1"
+        <input type="range" min="0" max="3" value="{{ pause_time }}" id="motion-pause" step="0.1"
                oninput="document.getElementById('pause-value').innerText=this.value"
                onchange="fetch('/set_motion_pause?value='+this.value)">
+    </div>
+    <div>
+        <label for="pre-move-pause">Pause Before Auto Move (s): <span id="pre-move-pause-value">{{ pre_move_pause_time }}</span></label>
+        <input type="range" min="0" max="2" value="{{ pre_move_pause_time }}" id="pre-move-pause" step="0.1"
+               oninput="document.getElementById('pre-move-pause-value').innerText=this.value"
+               onchange="fetch('/set_pre_move_pause?value='+this.value)">
     </div>
     <div>
         <label for="auto-motion">Auto Movement:</label>
@@ -285,10 +297,10 @@ HTML_PAGE = """
 
 
 def gen_frames():
-    global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX
+    global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX, MANUAL_OVERRIDE_PAUSE_UNTIL
     if not hasattr(gen_frames, "move_in_progress"):
         gen_frames.move_in_progress = False
-    if not hasattr(gen_frames, "target_motion_box"):
+    if not hasattr(gen_frames, "taßrget_motion_box"):
         gen_frames.target_motion_box = None
     if not hasattr(gen_frames, "pause_until"):
         gen_frames.pause_until = 0
@@ -418,6 +430,9 @@ def gen_frames():
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
         now = time.time()
+        # Disable auto features if manual override pause is active
+        auto_motion_active = AUTO_MOTION_ENABLED and (now > MANUAL_OVERRIDE_PAUSE_UNTIL)
+        auto_fire_active = AUTO_FIRE_ENABLED and (now > MANUAL_OVERRIDE_PAUSE_UNTIL)
         if not hasattr(gen_frames, "prev_gray"):
             gen_frames.prev_gray = gray
             motion_boxes = []
@@ -432,6 +447,7 @@ def gen_frames():
 
                 contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                 motion_boxes = []
+                # Draw all detected motion boxes in green
                 for contour in contours:
                     if cv2.contourArea(contour) < MOTION_AREA_THRESHOLD:
                         continue
@@ -439,15 +455,40 @@ def gen_frames():
                     motion_boxes.append((x, y, w, h))
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-                # Only perform auto-move if enabled
-                if AUTO_MOTION_ENABLED:
+                # Only perform auto-move if enabled and not in manual override pause
+                if auto_motion_active:
                     # If not already tracking a target, pick the largest box as the target
                     if not gen_frames.target_motion_box and motion_boxes:
                         gen_frames.target_motion_box = max(motion_boxes, key=lambda b: b[2]*b[3])
+                        gen_frames.target_motion_box_visible = True  # Show the red box
+
+                    # Draw the target box in red if it exists and is visible
+                    if getattr(gen_frames, "target_motion_box", None) and getattr(gen_frames, "target_motion_box_visible", False):
+                        x, y, w, h = gen_frames.target_motion_box
+                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
 
                     # If we have a target, move to center on it and ignore all other motion until done
                     if gen_frames.target_motion_box:
                         gen_frames.move_in_progress = True  # Set flag before moving
+
+                        # Pause before starting auto movement, but keep updating the camera feed
+                        pause_start = time.time()
+                        while time.time() - pause_start < PRE_MOVE_PAUSE_TIME:
+                            # Draw the red box during the pause
+                            x, y, w, h = gen_frames.target_motion_box
+                            frame_copy = frame.copy()
+                            cv2.rectangle(frame_copy, (x, y), (x + w, y + h), (0, 0, 255), 3)
+
+                            # Encode and yield the frame with the red box
+                            ret, buffer = cv2.imencode('.jpg', frame_copy)
+                            if not ret:
+                                continue
+                            frame_bytes = buffer.tobytes()
+                            yield (b'--frame\r\n'
+                                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+                        # Hide the red box after the pause and before moving
+                        gen_frames.target_motion_box_visible = False
 
                         x, y, w, h = gen_frames.target_motion_box
                         target_x = x + w // 2
@@ -482,8 +523,8 @@ def gen_frames():
                         gen_frames.move_in_progress = False
                         gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
 
-                        # Fire the solenoid 3 times after centering on motion, only if auto fire is enabled
-                        if AUTO_FIRE_ENABLED:
+                        # Fire the solenoid 3 times after centering on motion, only if auto fire is enabled and not in manual override pause
+                        if auto_fire_active:
                             solinoid_auto(3)
 
                 gen_frames.prev_gray = gray
@@ -512,6 +553,7 @@ def index():
         HTML_PAGE,
         threshold=MOTION_AREA_THRESHOLD,
         pause_time=MOTION_PAUSE_TIME,
+        pre_move_pause_time=PRE_MOVE_PAUSE_TIME,
         auto_motion=AUTO_MOTION_ENABLED,
         auto_fire=AUTO_FIRE_ENABLED
     )
@@ -524,19 +566,23 @@ def video_feed():
 
 @app.route('/pan_step')
 def pan_step_route():
+    global MANUAL_OVERRIDE_PAUSE_UNTIL
     direction = request.args.get('direction')
     fine = request.args.get('fine') == 'true'
     if direction in ["left", "right"]:
         step_servo_pan(direction, fine)
+        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
     return ("", 204)  # No content response
 
 @app.route('/tilt_step')
 def tilt_step_route():
+    global MANUAL_OVERRIDE_PAUSE_UNTIL
     direction = request.args.get('direction')
     fine = request.args.get('fine') == 'true'
     if direction in ["up", "down"]:
         step_servo_tilt(direction, fine)
-        return ("", 204)  # No content response
+        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
+    return ("", 204)  # No content response
 
 
 @app.route('/solinoid_pulse')
@@ -563,8 +609,18 @@ def set_motion_threshold():
 def set_motion_pause():
     global MOTION_PAUSE_TIME
     try:
-        value = float(request.args.get('value', 1.0))
-        MOTION_PAUSE_TIME = max(0, min(value, 2))  # Clamp between 0 and 2 seconds
+        value = float(request.args.get('value', 2.0))
+        MOTION_PAUSE_TIME = max(0, min(value, 3))  # Clamp between 0 and 3 seconds
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
+@app.route('/set_pre_move_pause')
+def set_pre_move_pause():
+    global PRE_MOVE_PAUSE_TIME
+    try:
+        value = float(request.args.get('value', 0.0))
+        PRE_MOVE_PAUSE_TIME = max(0, min(value, 2))  # Clamp between 0 and 2 seconds
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
@@ -595,3 +651,4 @@ if __name__ == '__main__':
         # Cleanup GPIO and pigpio on exit
         pi.stop()
         picam2.close()
+ß

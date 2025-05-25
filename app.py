@@ -133,8 +133,8 @@ def step_servo_tilt(direction, fine=False):
         else:
             TILT_POSITION = TILT_MIN
 
-# Global variable for motion area threshold (default 5000)
-MOTION_AREA_THRESHOLD = 5000
+# Global variable for motion area threshold (default 2750)
+MOTION_AREA_THRESHOLD = 2750
 
 # Calibration: how many pixels in the image correspond to one step of the motor
 PIXELS_PER_STEP_PAN = 1   # Adjust experimentally
@@ -144,7 +144,7 @@ PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 MOTION_PAUSE_TIME = 2.0  # Default 2 seconds
 
 # Add this global variable to enable/disable auto movement
-AUTO_MOTION_ENABLED = False
+AUTO_MOTION_ENABLEßD = False
 
 # Add this global variable to enable/disable auto fire after auto movement
 AUTO_FIRE_ENABLED = False

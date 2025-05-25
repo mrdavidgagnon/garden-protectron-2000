@@ -374,17 +374,23 @@ def gen_frames():
         ], np.int32)
         cv2.fillPoly(frame, [tilt_pts], line_color)
 
+        # --- Draw yellow square for motion area threshold in the center ---
+        # Calculate the side length of the square so that its area equals MOTION_AREA_THRESHOLD
+        square_side = int(MOTION_AREA_THRESHOLD ** 0.5)
+        top_left = (center_x - square_side // 2, center_y - square_side // 2)
+        bottom_right = (center_x + square_side // 2, center_y + square_side // 2)
+        yellow = (0, 255, 255)
+        cv2.rectangle(frame, top_left, bottom_right, yellow, 2)
+
         # --- Existing overlays (crosshairs, label, pan/tilt text, etc.) ---
         crosshair_length = 40
         dot_radius = 4
         color = (0, 255, 0)
         thickness = 2
-
-        # Horizontal line
+        # Horizontal lineß
         cv2.line(frame, (center_x - crosshair_length, center_y), (center_x + crosshair_length, center_y), color, thickness)
         # Vertical line
         cv2.line(frame, (center_x, center_y - crosshair_length), (center_x, center_y + crosshair_length), color, thickness)
-
         # Mil dots: center and at 1/3 and 2/3 of crosshair length from center
         for offset in [0, crosshair_length // 3, 2 * crosshair_length // 3]:
             if offset == 0:
@@ -651,4 +657,3 @@ if __name__ == '__main__':
         # Cleanup GPIO and pigpio on exit
         pi.stop()
         picam2.close()
-ß

@@ -144,7 +144,7 @@ PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 MOTION_PAUSE_TIME = 2.0  # Default 2 seconds
 
 # Add this global variable to enable/disable auto movement
-AUTO_MOTION_ENABLEßD = False
+AUTO_MOTION_ENABLED = False
 
 # Add this global variable to enable/disable auto fire after auto movement
 AUTO_FIRE_ENABLED = False

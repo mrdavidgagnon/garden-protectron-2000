@@ -5,6 +5,7 @@ from flask import Flask, Response, render_template_string, request
 from picamera2 import Picamera2, Preview
 import cv2
 import numpy as np
+import os
 
 app = Flask(__name__)
 
@@ -19,7 +20,7 @@ DIR_PIN_1 = 20  # Direction pin for Motor 1
 STEP_PIN_1 = 21  # Step pin for Motor 1
 
 # GPIO pin configuration for Motor 2 TILT
-DIR_PIN_2 = 22  # Direction pin for Motor 2
+DIR_PIN_2 = 22  # Direction pin ßfor Motor 2
 STEP_PIN_2 = 23  # Step pin for Motor 2
 STEP_DELAY =  0.0001  # Delay between steps in seconds
 
@@ -300,7 +301,7 @@ def gen_frames():
     global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX, MANUAL_OVERRIDE_PAUSE_UNTIL
     if not hasattr(gen_frames, "move_in_progress"):
         gen_frames.move_in_progress = False
-    if not hasattr(gen_frames, "taßrget_motion_box"):
+    if not hasattr(gen_frames, "target_motion_box"):
         gen_frames.target_motion_box = None
     if not hasattr(gen_frames, "pause_until"):
         gen_frames.pause_until = 0
@@ -443,7 +444,6 @@ def gen_frames():
             gen_frames.prev_gray = gray
             motion_boxes = []
         else:
-            # If a move is in progress or we're in the pause period, skip motion detection and just update prev_gray
             if gen_frames.move_in_progress or now < gen_frames.pause_until:
                 gen_frames.prev_gray = gray
             else:
@@ -453,13 +453,40 @@ def gen_frames():
 
                 contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                 motion_boxes = []
-                # Draw all detected motion boxes in green
+                max_area = 0
+                max_box = None
                 for contour in contours:
-                    if cv2.contourArea(contour) < MOTION_AREA_THRESHOLD:
+                    area = cv2.contourArea(contour)
+                    if area < MOTION_AREA_THRESHOLD:
                         continue
                     (x, y, w, h) = cv2.boundingRect(contour)
                     motion_boxes.append((x, y, w, h))
+                    if area > max_area:
+                        max_area = area
+                        max_box = (x, y, w, h)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+                # --- Save the most significant motion as a PNG square image ---
+                if max_box is not None:
+                    x, y, w, h = max_box
+                    # Make a square crop around the motion area
+                    side = max(w, h)
+                    cx = x + w // 2
+                    cy = y + h // 2
+                    half_side = side // 2
+                    # Ensure the crop is within image bounds
+                    crop_x1 = max(0, cx - half_side)
+                    crop_y1 = max(0, cy - half_side)
+                    crop_x2 = min(width, cx + half_side)
+                    crop_y2 = min(height, cy + half_side)
+                    crop = frame[crop_y1:crop_y2, crop_x1:crop_x2]
+
+                    # Prepare folder and filename
+                    folder = os.path.join("motion_images", str(MOTION_AREA_THRESHOLD))
+                    os.makedirs(folder, exist_ok=True)
+                    timestamp = int(time.time() * 1000)
+                    filename = os.path.join(folder, f"motion_{timestamp}.png")
+                    cv2.imwrite(filename, crop)
 
                 # Only perform auto-move if enabled and not in manual override pause
                 if auto_motion_active:
@@ -577,6 +604,7 @@ def pan_step_route():
     fine = request.args.get('fine') == 'true'
     if direction in ["left", "right"]:
         step_servo_pan(direction, fine)
+        # Disable auto features for the duration of MOTION_PAUSE_TIME
         MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
     return ("", 204)  # No content response
 
@@ -587,6 +615,7 @@ def tilt_step_route():
     fine = request.args.get('fine') == 'true'
     if direction in ["up", "down"]:
         step_servo_tilt(direction, fine)
+        # Disable auto features for the duration of MOTION_PAUSE_TIME
         MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
     return ("", 204)  # No content response
 

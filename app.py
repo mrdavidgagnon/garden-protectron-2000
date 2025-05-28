@@ -520,14 +520,18 @@ def gen_frames():
                     crop_y1 = max(0, cy - half_side)
                     crop_x2 = min(width, cx + half_side)
                     crop_y2 = min(height, cy + half_side)
-                    crop = frame[crop_y1:crop_y2, crop_x1:crop_x2]
-
-                    # Prepare folder and filename
-                    folder = os.path.join("motion_images", str(MOTION_AREA_THRESHOLD))
-                    os.makedirs(folder, exist_ok=True)
-                    timestamp = int(time.time() * 1000)
-                    filename = os.path.join(folder, f"motion_{timestamp}.png")
-                    cv2.imwrite(filename, crop)
+                    # Prevent empty crop
+                    if crop_x2 > crop_x1 and crop_y2 > crop_y1:
+                        crop = frame[crop_y1:crop_y2, crop_x1:crop_x2]
+                        folder = os.path.join("motion_images", str(MOTION_AREA_THRESHOLD))
+                        os.makedirs(folder, exist_ok=True)
+                        timestamp = int(time.time() * 1000)
+                        filename = os.path.join(folder, f"motion_{timestamp}.png")
+                        success = cv2.imwrite(filename, crop)
+                        if not success:
+                            print(f"Failed to save motion image: {filename}")
+                    else:
+                        print("Motion crop area invalid, not saving image.")
 
                 # Only perform auto-move if enabled and not in manual override pause
                 if auto_motion_active:

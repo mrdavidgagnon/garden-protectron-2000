@@ -159,6 +159,9 @@ MANUAL_OVERRIDE_PAUSE_UNTIL = 0  # Timestamp until which auto features are pause
 # Add this global variable for auto scan mode
 AUTO_SCAN_ENABLED = False
 
+# Add this global variable for auto scan wait time (default 15 seconds)
+AUTO_SCAN_WAIT = 15
+
 HTML_PAGE = """
     <html>
     <head>
@@ -275,6 +278,12 @@ HTML_PAGE = """
         <input type="range" min="0" max="2" value="{{ pre_move_pause_time }}" id="pre-move-pause" step="0.1"
                oninput="document.getElementById('pre-move-pause-value').innerText=this.value"
                onchange="fetch('/set_pre_move_pause?value='+this.value)">
+    </div>
+    <div>
+        <label for="auto-scan-wait">Auto Pan Timer (s): <span id="auto-scan-wait-value">{{ auto_scan_wait }}</span></label>
+        <input type="range" min="5" max="60" value="{{ auto_scan_wait }}" id="auto-scan-wait" step="1"
+               oninput="document.getElementById('auto-scan-wait-value').innerText=this.value"
+               onchange="fetch('/set_auto_scan_wait?value='+this.value)">
     </div>
     <div>
         <label for="auto-motion">Auto Center on Movement:</label>
@@ -619,7 +628,8 @@ def index():
         pre_move_pause_time=PRE_MOVE_PAUSE_TIME,
         auto_motion=AUTO_MOTION_ENABLED,
         auto_fire=AUTO_FIRE_ENABLED,
-        auto_scan=AUTO_SCAN_ENABLED
+        auto_scan=AUTO_SCAN_ENABLED,
+        auto_scan_wait=AUTO_SCAN_WAIT
     )
 
 @app.route('/video_feed')
@@ -691,6 +701,16 @@ def set_pre_move_pause():
     except Exception:
         return ("Invalid value", 400)
 
+@app.route('/set_auto_scan_wait')
+def set_auto_scan_wait():
+    global AUTO_SCAN_WAIT
+    try:
+        value = int(request.args.get('value', 15))
+        AUTO_SCAN_WAIT = max(5, min(value, 60))  # Clamp between 5 and 60 seconds
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
 @app.route('/toggle_auto_motion')
 def toggle_auto_motion():
     global AUTO_MOTION_ENABLED
@@ -720,9 +740,8 @@ def calibrate_pan_tilt():
 import threading
 
 def auto_scan_thread():
-    global PAN_POSITION, AUTO_SCAN_ENABLED, auto_scan_next_time
+    global PAN_POSITION, AUTO_SCAN_ENABLED, auto_scan_next_time, AUTO_SCAN_WAIT
     scan_direction = -1  # -1 for right, 1 for left
-    scan_wait = 15  # seconds to wait at each position
     PAN_STEP = 800  # Pan by +/-800 per move
 
     while True:
@@ -741,8 +760,8 @@ def auto_scan_thread():
                 rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=clockwise)
                 PAN_POSITION = next_pos
 
-            auto_scan_next_time = time.time() + scan_wait
-            time.sleep(scan_wait)
+            auto_scan_next_time = time.time() + AUTO_SCAN_WAIT
+            time.sleep(AUTO_SCAN_WAIT)
 
             # If at edge, reverse direction
             if PAN_POSITION == PAN_MIN or PAN_POSITION == PAN_MAX:

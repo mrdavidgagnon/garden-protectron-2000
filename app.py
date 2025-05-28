@@ -486,8 +486,10 @@ def gen_frames():
             if gen_frames.move_in_progress or now < gen_frames.pause_until:
                 gen_frames.prev_gray = gray
             else:
+                # Lower the threshold value for more sensitivity to low contrast changes
                 frame_delta = cv2.absdiff(gen_frames.prev_gray, gray)
-                thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+                # Lower threshold from 25 to 5 for higher sensitivity
+                thresh = cv2.threshold(frame_delta, 5, 255, cv2.THRESH_BINARY)[1]
                 thresh = cv2.dilate(thresh, None, iterations=2)
 
                 contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)

@@ -145,7 +145,7 @@ PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 MOTION_PAUSE_TIME = 2.0  # Default 2 seconds
 
 # Add this global variable to enable/disable auto movement
-AUTO_MOTION_ENABLED = False
+AUTO_MOTION_ENABLED = False  # "Auto Center on Movement" mode
 
 # Add this global variable to enable/disable auto fire after auto movement
 AUTO_FIRE_ENABLED = False
@@ -277,7 +277,7 @@ HTML_PAGE = """
                onchange="fetch('/set_pre_move_pause?value='+this.value)">
     </div>
     <div>
-        <label for="auto-motion">Auto Movement:</label>
+        <label for="auto-motion">Auto Center on Movement:</label>
         <button id="auto-motion-btn" onclick="toggleAutoMotion()">{{ 'ON' if auto_motion else 'OFF' }}</button>
     </div>
     <div>

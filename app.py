@@ -156,6 +156,9 @@ PRE_MOVE_PAUSE_TIME = 0.0  # Default pause before auto move (seconds)
 # Add this global variable to pause auto features during manual override
 MANUAL_OVERRIDE_PAUSE_UNTIL = 0  # Timestamp until which auto features are paused
 
+# Add this global variable for auto scan mode
+AUTO_SCAN_ENABLED = False
+
 HTML_PAGE = """
     <html>
     <head>
@@ -281,6 +284,10 @@ HTML_PAGE = """
         <label for="auto-fire">Auto Fire:</label>
         <button id="auto-fire-btn" onclick="toggleAutoFire()">{{ 'ON' if auto_fire else 'OFF' }}</button>
     </div>
+    <div>
+        <label for="auto-scan">Auto Scan:</label>
+        <button id="auto-scan-btn" onclick="toggleAutoScan()">{{ 'ON' if auto_scan else 'OFF' }}</button>
+    </div>
     </div>
     <script>
     function toggleAutoMotion() {
@@ -289,6 +296,10 @@ HTML_PAGE = """
     }
     function toggleAutoFire() {
         fetch('/toggle_auto_fire')
+          .then(() => location.reload());
+    }
+    function toggleAutoScan() {
+        fetch('/toggle_auto_scan')
           .then(() => location.reload());
     }
     </script>
@@ -305,6 +316,12 @@ def gen_frames():
         gen_frames.target_motion_box = None
     if not hasattr(gen_frames, "pause_until"):
         gen_frames.pause_until = 0
+
+    # --- Add access to auto_scan_thread's scan_wait and next scan time ---
+    # Use a global to track the next scan time
+    global auto_scan_next_time
+    if 'auto_scan_next_time' not in globals():
+        auto_scan_next_time = time.time() + 15  # Default to 15s from now
 
     while True:
         frame = picam2.capture_array()
@@ -415,7 +432,7 @@ def gen_frames():
         # Overlay pan/tilt position in the top right corner, small green Courier font
         pos_text = f"Pan: {PAN_POSITION}"
         tilt_text = f"Tilt: {TILT_POSITION}"
-        font = cv2.FONT_HERSHEY_SIMPLEX  # OpenCV doesn't have Courier, but this is monospaced-like
+        font = cv2.FONT_HERSHEY_SIMPLEX
         font_scale = 0.7
         font_thickness = 1
         text_color = (0, 255, 0)
@@ -431,6 +448,19 @@ def gen_frames():
 
         cv2.putText(frame, pos_text, (pos_x, pos_y), font, font_scale, text_color, font_thickness, cv2.LINE_AA)
         cv2.putText(frame, tilt_text, (tilt_x, tilt_y), font, font_scale, text_color, font_thickness, cv2.LINE_AA)
+
+        # --- Overlay: Auto Scan countdown (under pan/tilt) ---
+        if AUTO_SCAN_ENABLED:
+            # Show seconds until next scan move
+            seconds_until_scan = int(max(0, auto_scan_next_time - time.time()))
+            scan_text = f"Next scan move: {seconds_until_scan}s"
+            scan_font_scale = 0.7
+            scan_font_thickness = 1
+            scan_color = (0, 255, 255)  # Yellow
+            scan_size, _ = cv2.getTextSize(scan_text, font, scan_font_scale, scan_font_thickness)
+            scan_x = width - scan_size[0] - margin
+            scan_y = tilt_y + tilt_size[1] + 15
+            cv2.putText(frame, scan_text, (scan_x, scan_y), font, scan_font_scale, scan_color, scan_font_thickness, cv2.LINE_AA)
 
         # Convert frame to grayscale for motion detection
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -588,7 +618,8 @@ def index():
         pause_time=MOTION_PAUSE_TIME,
         pre_move_pause_time=PRE_MOVE_PAUSE_TIME,
         auto_motion=AUTO_MOTION_ENABLED,
-        auto_fire=AUTO_FIRE_ENABLED
+        auto_fire=AUTO_FIRE_ENABLED,
+        auto_scan=AUTO_SCAN_ENABLED
     )
 
 @app.route('/video_feed')
@@ -672,6 +703,12 @@ def toggle_auto_fire():
     AUTO_FIRE_ENABLED = not AUTO_FIRE_ENABLED
     return ("", 204)
 
+@app.route('/toggle_auto_scan')
+def toggle_auto_scan():
+    global AUTO_SCAN_ENABLED
+    AUTO_SCAN_ENABLED = not AUTO_SCAN_ENABLED
+    return ("", 204)
+
 @app.route('/calibrate_pan_tilt')
 def calibrate_pan_tilt():
     global PAN_POSITION, TILT_POSITION
@@ -679,10 +716,48 @@ def calibrate_pan_tilt():
     TILT_POSITION = 0
     return ("", 204)
 
+# --- Auto Scan Thread ---
+import threading
+
+def auto_scan_thread():
+    global PAN_POSITION, AUTO_SCAN_ENABLED, auto_scan_next_time
+    scan_direction = -1  # -1 for right, 1 for left
+    scan_wait = 15  # seconds to wait at each position
+    PAN_STEP = 800  # Pan by +/-800 per move
+
+    while True:
+        if AUTO_SCAN_ENABLED:
+            # Calculate next position, clamp to limits
+            next_pos = PAN_POSITION + (PAN_STEP * scan_direction)
+            if scan_direction == -1 and next_pos < PAN_MIN:
+                next_pos = PAN_MIN
+            elif scan_direction == 1 and next_pos > PAN_MAX:
+                next_pos = PAN_MAX
+
+            # Move to next position if needed
+            steps = abs(PAN_POSITION - next_pos)
+            clockwise = (next_pos > PAN_POSITION)
+            if steps > 0:
+                rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=clockwise)
+                PAN_POSITION = next_pos
+
+            auto_scan_next_time = time.time() + scan_wait
+            time.sleep(scan_wait)
+
+            # If at edge, reverse direction
+            if PAN_POSITION == PAN_MIN or PAN_POSITION == PAN_MAX:
+                scan_direction *= -1
+        else:
+            auto_scan_next_time = time.time() + 1
+            time.sleep(1)
+
+# Start the auto scan thread
+threading.Thread(target=auto_scan_thread, daemon=True).start()
+
 if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=5000, threaded=True)
     finally:
-        # Cleanup GPIO and pigpio on exit
+        # Cleanup GPIO and pigpio on ßexit
         pi.stop()
         picam2.close()

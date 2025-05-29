@@ -48,6 +48,8 @@ PAN_MAX = 2000
 TILT_MIN = -800
 TILT_MAX = 1000
 
+MOTION_DETECTION_PAUSE_UNTIL = 0  # Timestamp until which motion detection is paused
+DELAY_MOTION_DETECTION_AFTER_MOVE = 2.0  # Default 2 seconds
 
 # Initialize pigpio
 pi = pigpio.pi()
@@ -68,12 +70,15 @@ def initialize_steppers():
 
 # Function to rotate a motor
 def rotate_motor(dir_pin, step_pin, steps, clockwise=True):
+
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE  # Pause detection for at least the buffer
     pi.write(dir_pin, 1 if clockwise else 0)  # Set direction
     for _ in range(steps):
         pi.write(step_pin, 1)
         time.sleep(STEP_DELAY)
         pi.write(step_pin, 0)
         time.sleep(STEP_DELAY)
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE  # Extend pause after move completes
 
 def solinoid_off():
     gpio.output(SOLINOID_PIN, gpio.LOW)
@@ -101,9 +106,9 @@ def solinoid_auto(number):
 
 
 def step_servo_pan(direction, fine=False):
-    global PAN_POSITION
+    global PAN_POSITION, MOTION_DETECTION_PAUSE_UNTIL
     steps = 100
-
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
     if direction == "right":
         if PAN_POSITION - steps >= PAN_MIN:
             rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=False)
@@ -116,11 +121,12 @@ def step_servo_pan(direction, fine=False):
             PAN_POSITION += steps
         else:
             PAN_POSITION = PAN_MAX
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
 
 def step_servo_tilt(direction, fine=False):
-    global TILT_POSITION
+    global TILT_POSITION, MOTION_DETECTION_PAUSE_UNTIL
     steps = 100
-
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
     if direction == "up":
         if TILT_POSITION + steps <= TILT_MAX:
             rotate_motor(DIR_PIN_2, STEP_PIN_2, steps=steps, clockwise=True)
@@ -133,6 +139,7 @@ def step_servo_tilt(direction, fine=False):
             TILT_POSITION -= steps
         else:
             TILT_POSITION = TILT_MIN
+    MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
 
 # Global variable for motion area threshold (default 2750)
 MOTION_AREA_THRESHOLD = 2750
@@ -142,7 +149,7 @@ PIXELS_PER_STEP_PAN = 1   # Adjust experimentally
 PIXELS_PER_STEP_TILT = 1  # Adjust experimentally
 
 # Add this global variable for the pause time (in seconds) after centering on motion
-MOTION_PAUSE_TIME = 2.0  # Default 2 seconds
+DETECTION_PAUSE_AFTER_MOVE = 2.0  # Default 2 seconds
 
 # Add this global variable to enable/disable auto movement
 AUTO_MOTION_ENABLED = False  # "Auto Center on Movement" mode
@@ -268,10 +275,10 @@ HTML_PAGE = """
                onchange="fetch('/set_motion_threshold?value='+this.value)">
     </div>
     <div>
-        <label for="motion-pause">Pause After Centering (s): <span id="pause-value">{{ pause_time }}</span></label>
+        <label for="motion-pause">Pause Detection After Move (s): <span id="pause-value">{{ pause_time }}</span></label>
         <input type="range" min="0" max="3" value="{{ pause_time }}" id="motion-pause" step="0.1"
                oninput="document.getElementById('pause-value').innerText=this.value"
-               onchange="fetch('/set_motion_pause?value='+this.value)">
+               onchange="fetch('/set_detection_pause_after_move?value='+this.value)">
     </div>
     <div>
         <label for="pre-move-pause">Pause Before Auto Move (s): <span id="pre-move-pause-value">{{ pre_move_pause_time }}</span></label>
@@ -318,7 +325,7 @@ HTML_PAGE = """
 
 
 def gen_frames():
-    global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX, MANUAL_OVERRIDE_PAUSE_UNTIL
+    global PAN_POSITION, PAN_MIN, PAN_MAX, TILT_POSITION, TILT_MIN, TILT_MAX, MANUAL_OVERRIDE_PAUSE_UNTIL, MOTION_DETECTION_PAUSE_UNTIL
     if not hasattr(gen_frames, "move_in_progress"):
         gen_frames.move_in_progress = False
     if not hasattr(gen_frames, "target_motion_box"):
@@ -483,8 +490,10 @@ def gen_frames():
             gen_frames.prev_gray = gray
             motion_boxes = []
         else:
-            if gen_frames.move_in_progress or now < gen_frames.pause_until:
+            # Disable motion detection during and after any move
+            if gen_frames.move_in_progress or now < gen_frames.pause_until or now < MOTION_DETECTION_PAUSE_UNTIL:
                 gen_frames.prev_gray = gray
+                motion_boxes = []
             else:
                 # Lower the threshold value for more sensitivity to low contrast changes
                 frame_delta = cv2.absdiff(gen_frames.prev_gray, gray)
@@ -599,7 +608,7 @@ def gen_frames():
                         # After moving, clear the target and pause further tracking
                         gen_frames.target_motion_box = None
                         gen_frames.move_in_progress = False
-                        gen_frames.pause_until = time.time() + MOTION_PAUSE_TIME
+                        gen_frames.pause_until = time.time() + DETECTION_PAUSE_AFTER_MOVE
 
                         # Fire the solenoid 3 times after centering on motion, only if auto fire is enabled and not in manual override pause
                         if auto_fire_active:
@@ -630,7 +639,7 @@ def index():
     return render_template_string(
         HTML_PAGE,
         threshold=MOTION_AREA_THRESHOLD,
-        pause_time=MOTION_PAUSE_TIME,
+        pause_time=DETECTION_PAUSE_AFTER_MOVE,
         pre_move_pause_time=PRE_MOVE_PAUSE_TIME,
         auto_motion=AUTO_MOTION_ENABLED,
         auto_fire=AUTO_FIRE_ENABLED,
@@ -651,8 +660,8 @@ def pan_step_route():
     fine = request.args.get('fine') == 'true'
     if direction in ["left", "right"]:
         step_servo_pan(direction, fine)
-        # Disable auto features for the duration of MOTION_PAUSE_TIME
-        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
+        # Disable auto features for the duration of DETECTION_PAUSE_AFTER_MOVE
+        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
     return ("", 204)  # No content response
 
 @app.route('/tilt_step')
@@ -662,8 +671,8 @@ def tilt_step_route():
     fine = request.args.get('fine') == 'true'
     if direction in ["up", "down"]:
         step_servo_tilt(direction, fine)
-        # Disable auto features for the duration of MOTION_PAUSE_TIME
-        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + MOTION_PAUSE_TIME
+        # Disable auto features for the duration of DETECTION_PAUSE_AFTER_MOVE
+        MANUAL_OVERRIDE_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
     return ("", 204)  # No content response
 
 
@@ -687,12 +696,12 @@ def set_motion_threshold():
     except Exception:
         return ("Invalid value", 400)
 
-@app.route('/set_motion_pause')
-def set_motion_pause():
-    global MOTION_PAUSE_TIME
+@app.route('/set_detection_pause_after_move')
+def set_detection_pause_after_move():
+    global DETECTION_PAUSE_AFTER_MOVE
     try:
         value = float(request.args.get('value', 2.0))
-        MOTION_PAUSE_TIME = max(0, min(value, 3))  # Clamp between 0 and 3 seconds
+        DETECTION_PAUSE_AFTER_MOVE = max(0, min(value, 3))  # Clamp between 0 and 3 seconds
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
@@ -746,7 +755,7 @@ def calibrate_pan_tilt():
 import threading
 
 def auto_scan_thread():
-    global PAN_POSITION, AUTO_SCAN_ENABLED, auto_scan_next_time, AUTO_SCAN_WAIT
+    global PAN_POSITION, AUTO_SCAN_ENABLED, auto_scan_next_time, AUTO_SCAN_WAIT, MOTION_DETECTION_PAUSE_UNTIL, DETECTION_PAUSE_AFTER_MOVE
     scan_direction = -1  # -1 for right, 1 for left
     PAN_STEP = 800  # Pan by +/-800 per move
 
@@ -765,6 +774,8 @@ def auto_scan_thread():
             if steps > 0:
                 rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=clockwise)
                 PAN_POSITION = next_pos
+                # Pause motion detection after auto scan move
+                MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
 
             auto_scan_next_time = time.time() + AUTO_SCAN_WAIT
             time.sleep(AUTO_SCAN_WAIT)

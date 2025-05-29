@@ -308,9 +308,6 @@ def gen_frames():
         height, width, _ = frame.shape
         center_x, center_y = width // 2, height // 2
 
-        # Draw overlays for user display
-        draw_overlays(frame, width, height, center_x, center_y)
-
         # Motion detection should use a clean frame (no overlays)
         frame_for_motion = frame.copy()
 
@@ -389,6 +386,9 @@ def gen_frames():
                         gen_frames.pause_until = time.time() + DETECTION_PAUSE_AFTER_MOVE
                         if auto_fire_active:
                             solinoid_auto(3)
+        
+        # Draw overlays for user display
+        draw_overlays(frame, width, height, center_x, center_y)
 
         ret, buffer = cv2.imencode('.jpg', frame)
         if not ret:

@@ -772,10 +772,12 @@ def auto_scan_thread():
             steps = abs(PAN_POSITION - next_pos)
             clockwise = (next_pos > PAN_POSITION)
             if steps > 0:
+                # Pause motion detection BEFORE starting the move, for the duration of the move plus DETECTION_PAUSE_AFTER_MOVE
+                move_time = steps * STEP_DELAY * 2  # Each step has two delays
+                MOTION_DETECTION_PAUSE_UNTIL = time.time() + move_time + DETECTION_PAUSE_AFTER_MOVE
+
                 rotate_motor(DIR_PIN_1, STEP_PIN_1, steps=steps, clockwise=clockwise)
                 PAN_POSITION = next_pos
-                # Pause motion detection after auto scan move
-                MOTION_DETECTION_PAUSE_UNTIL = time.time() + DETECTION_PAUSE_AFTER_MOVE
 
             auto_scan_next_time = time.time() + AUTO_SCAN_WAIT
             time.sleep(AUTO_SCAN_WAIT)

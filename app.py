@@ -52,6 +52,10 @@ PRE_MOVE_PAUSE_TIME = 0.0
 MANUAL_OVERRIDE_PAUSE_UNTIL = 0
 AUTO_SCAN_ENABLED = False
 AUTO_SCAN_WAIT = 15
+MOTION_CONSECUTIVE_FRAMES = 2
+motion_consecutive_count = 0
+last_motion_box = None
+CONSECUTIVE_MOTION_DETECTION_BUFFER = 1.5  # 50% larger region
 
 # --- pigpio Setup ---
 pi = pigpio.pi()
@@ -164,8 +168,13 @@ def move_to_target(target_x, target_y, center_x, center_y):
 def detect_motion(prev_gray, frame, threshold):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
-    frame_delta = cv2.absdiff(prev_gray, gray)
-    thresh = cv2.threshold(frame_delta, 2, 255, cv2.THRESH_BINARY)[1]
+    
+    # Mask out high-brightness pixels (e.g., > 230)
+    brightness_mask = (gray < 230).astype(np.uint8)  # 1 where not too bright, 0 where too bright
+    masked_gray = gray * brightness_mask
+    masked_prev = prev_gray * brightness_mask
+    frame_delta = cv2.absdiff(masked_prev, masked_gray)
+    thresh = cv2.threshold(frame_delta, 3, 255, cv2.THRESH_BINARY)[1]
     thresh = cv2.dilate(thresh, None, iterations=2)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     motion_boxes = []
@@ -288,6 +297,8 @@ def draw_overlays(frame, width, height, center_x, center_y):
         cv2.putText(frame, scan_text, (scan_x, scan_y), font, scan_font_scale, scan_color, scan_font_thickness, cv2.LINE_AA)
 
 def gen_frames():
+    global motion_consecutive_count, last_motion_box
+
     if not hasattr(gen_frames, "prev_gray"):
         gen_frames.prev_gray = None
     if not hasattr(gen_frames, "target_motion_box"):
@@ -327,30 +338,63 @@ def gen_frames():
                 gray = cv2.GaussianBlur(gray, (21, 21), 0)
                 gen_frames.prev_gray = gray
                 motion_boxes = []
+                motion_consecutive_count = 0
+                last_motion_box = None
             else:
                 gray, motion_boxes, max_box = detect_motion(gen_frames.prev_gray, frame_for_motion, MOTION_AREA_THRESHOLD)
                 gen_frames.prev_gray = gray
 
-                # Save the most significant motion as a PNG square image
                 if max_box is not None:
                     x, y, w, h = max_box
-                    # Draw the rectangle on the main frame for user display
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
-                    side = max(w, h)
-                    cx = x + w // 2
-                    cy = y + h // 2
-                    half_side = side // 2
-                    crop_x1 = max(0, cx - half_side)
-                    crop_y1 = max(0, cy - half_side)
-                    crop_x2 = min(width, cx + half_side)
-                    crop_y2 = min(height, cy + half_side)
-                    if crop_x2 > crop_x1 and crop_y2 > crop_y1:
-                        crop = frame_for_motion[crop_y1:crop_y2, crop_x1:crop_x2]
-                        folder = os.path.join("motion_images", str(MOTION_AREA_THRESHOLD))
-                        os.makedirs(folder, exist_ok=True)
-                        timestamp = int(time.time() * 1000)
-                        filename = os.path.join(folder, f"motion_{timestamp}.png")
-                        cv2.imwrite(filename, crop)
+                    # If the box is similar to the last, increment, else reset
+                    if last_motion_box is not None:
+                        lx, ly, lw, lh = last_motion_box
+                        # Define a buffer region 50% larger than the last box
+                        buffer_w = int(lw * CONSECUTIVE_MOTION_DETECTION_BUFFER)
+                        buffer_h = int(lh * CONSECUTIVE_MOTION_DETECTION_BUFFER)
+                        buffer_x = lx + lw // 2 - buffer_w // 2
+                        buffer_y = ly + lh // 2 - buffer_h // 2
+                        # Check if the current box is inside the buffered region
+                        in_buffer = (
+                            x >= buffer_x and
+                            y >= buffer_y and
+                            x + w <= buffer_x + buffer_w and
+                            y + h <= buffer_y + buffer_h
+                        )
+                        if in_buffer:
+                            motion_consecutive_count += 1
+                        else:
+                            motion_consecutive_count = 1
+                    else:
+                        motion_consecutive_count = 1
+                    last_motion_box = max_box
+
+                    x, y, w, h = max_box
+                    # Draw light green box for any motion
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (144, 238, 144), 3)
+
+                    # If 5+ consecutive frames, draw red box and save image
+                    if motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
+                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 3)
+                        side = max(w, h)
+                        cx = x + w // 2
+                        cy = y + h // 2
+                        half_side = side // 2
+                        crop_x1 = max(0, cx - half_side)
+                        crop_y1 = max(0, cy - half_side)
+                        crop_x2 = min(width, cx + half_side)
+                        crop_y2 = min(height, cy + half_side)
+                        if crop_x2 > crop_x1 and crop_y2 > crop_y1:
+                            crop = frame_for_motion[crop_y1:crop_y2, crop_x1:crop_x2]
+                            folder = os.path.join("motion_images", str(MOTION_AREA_THRESHOLD))
+                            os.makedirs(folder, exist_ok=True)
+                            timestamp = int(time.time() * 1000)
+                            filename = os.path.join(folder, f"motion_{timestamp}.png")
+                            cv2.imwrite(filename, crop)
+                else:
+                    # No motion detected, reset counter and box
+                    motion_consecutive_count = 0
+                    last_motion_box = None
 
                 # Only perform auto-move if enabled and not in manual override pause
                 if auto_motion_active:

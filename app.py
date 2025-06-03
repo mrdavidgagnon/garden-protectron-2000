@@ -57,6 +57,7 @@ motion_consecutive_count = 0
 last_motion_box = None
 CONSECUTIVE_MOTION_DETECTION_BUFFER = 1.5  # 50% larger region
 MOTION_LOW_THRESHOLD = 4  # Default value for the lower cutoff
+VIDEO_STREAM_MODE = "overlays"  # "overlays" or "threshold_overlays"
 
 # --- pigpio Setup ---
 pi = pigpio.pi()
@@ -299,7 +300,7 @@ def draw_overlays(frame, width, height, center_x, center_y):
         cv2.putText(frame, scan_text, (scan_x, scan_y), font, scan_font_scale, scan_color, scan_font_thickness, cv2.LINE_AA)
 
 def gen_frames():
-    global motion_consecutive_count, last_motion_box
+    global motion_consecutive_count, last_motion_box, VIDEO_STREAM_MODE
 
     if not hasattr(gen_frames, "prev_gray"):
         gen_frames.prev_gray = None
@@ -330,6 +331,7 @@ def gen_frames():
             gray = cv2.GaussianBlur(gray, (21, 21), 0)
             gen_frames.prev_gray = gray
             motion_boxes = []
+            thresh = np.zeros_like(gray)
         else:
             now = time.time()
             auto_motion_active = AUTO_MOTION_ENABLED and (now > MANUAL_OVERRIDE_PAUSE_UNTIL)
@@ -340,10 +342,18 @@ def gen_frames():
                 gray = cv2.GaussianBlur(gray, (21, 21), 0)
                 gen_frames.prev_gray = gray
                 motion_boxes = []
+                thresh = np.zeros_like(gray)
                 motion_consecutive_count = 0
                 last_motion_box = None
             else:
                 gray, motion_boxes, max_box = detect_motion(gen_frames.prev_gray, frame_for_motion, MOTION_AREA_THRESHOLD)
+                # Calculate threshold image for "threshold_overlays" mode
+                brightness_mask = (gray < 230).astype(np.uint8)
+                masked_gray = gray * brightness_mask
+                masked_prev = gen_frames.prev_gray * brightness_mask
+                frame_delta = cv2.absdiff(masked_prev, masked_gray)
+                thresh = cv2.threshold(frame_delta, MOTION_LOW_THRESHOLD, 255, cv2.THRESH_BINARY)[1]
+                thresh = cv2.dilate(thresh, None, iterations=2)
                 gen_frames.prev_gray = gray
 
                 if max_box is not None:
@@ -437,9 +447,29 @@ def gen_frames():
                             solinoid_auto(3)
         
         # Draw overlays for user display
-        draw_overlays(frame, width, height, center_x, center_y)
+        if VIDEO_STREAM_MODE == "overlays":
+            draw_overlays(frame, width, height, center_x, center_y)
+            output_frame = frame
+        elif VIDEO_STREAM_MODE == "threshold_overlays":
+            # Convert threshold image to 3-channel and draw overlays
+            thresh_color = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
 
-        ret, buffer = cv2.imencode('.jpg', frame)
+            # Draw motion area overlays (green for initial, red for confirmed)
+            for (x, y, w, h) in motion_boxes:
+                # Draw light green box for any detected motion
+                cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (144, 238, 144), 2)
+            if max_box is not None and motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
+                x, y, w, h = max_box
+                # Draw red box for confirmed motion
+                cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (0, 0, 255), 3)
+
+            # Draw overlays (crosshairs, pan/tilt, etc.)
+            draw_overlays(thresh_color, width, height, center_x, center_y)
+            output_frame = thresh_color
+        else:
+            output_frame = frame  # fallback
+
+        ret, buffer = cv2.imencode('.jpg', output_frame)
         if not ret:
             continue
         frame_bytes = buffer.tobytes()
@@ -588,6 +618,13 @@ HTML_PAGE = """
                oninput="document.getElementById('motion-low-threshold-value').innerText=this.value"
                onchange="fetch('/set_motion_low_threshold?value='+this.value)">
     </div>
+    <div>
+        <label for="video-mode">Video Source:</label>
+        <select id="video-mode" onchange="setVideoMode(this.value)">
+            <option value="overlays" {% if video_stream_mode == 'overlays' %}selected{% endif %}>Image with Overlays</option>
+            <option value="threshold_overlays" {% if video_stream_mode == 'threshold_overlays' %}selected{% endif %}>Threshold Image with Overlays</option>
+        </select>
+    </div>
     </div>
     <script>
     function toggleAutoMotion() {
@@ -600,6 +637,10 @@ HTML_PAGE = """
     }
     function toggleAutoScan() {
         fetch('/toggle_auto_scan')
+          .then(() => location.reload());
+    }
+    function setVideoMode(mode) {
+        fetch('/set_video_mode?mode=' + mode)
           .then(() => location.reload());
     }
     </script>
@@ -618,7 +659,8 @@ def index():
         auto_fire=AUTO_FIRE_ENABLED,
         auto_scan=AUTO_SCAN_ENABLED,
         auto_scan_wait=AUTO_SCAN_WAIT,
-        motion_low_threshold=MOTION_LOW_THRESHOLD
+        motion_low_threshold=MOTION_LOW_THRESHOLD,
+        video_stream_mode=VIDEO_STREAM_MODE
     )
 
 @app.route('/video_feed')
@@ -706,6 +748,15 @@ def set_motion_low_threshold():
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)
+
+@app.route('/set_video_mode')
+def set_video_mode():
+    global VIDEO_STREAM_MODE
+    mode = request.args.get('mode', 'overlays')
+    if mode in ['overlays', 'threshold_overlays']:
+        VIDEO_STREAM_MODE = mode
+        return ("", 204)
+    return ("Invalid mode", 400)
 
 @app.route('/toggle_auto_motion')
 def toggle_auto_motion():

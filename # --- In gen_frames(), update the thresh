@@ -1,0 +1,18 @@
+# --- In gen_frames(), update the threshold_overlays mode to include motion area overlays ---
+
+        elif VIDEO_STREAM_MODE == "threshold_overlays":
+            # Convert threshold image to 3-channel and draw overlays
+            thresh_color = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
+
+            # Draw motion area overlays (green for initial, red for confirmed)
+            for (x, y, w, h) in motion_boxes:
+                # Draw light green box for any detected motion
+                cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (144, 238, 144), 2)
+            if max_box is not None and motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
+                x, y, w, h = max_box
+                # Draw red box for confirmed motion
+                cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (0, 0, 255), 3)
+
+            # Draw overlays (crosshairs, pan/tilt, etc.)
+            draw_overlays(thresh_color, width, height, center_x, center_y)
+            output_frame = thresh_color

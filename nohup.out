@@ -1,0 +1,236 @@
+[19:47:47.021871547] [5501] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[19:47:47.058613007] [5543] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[19:47:47.061171135] [5543] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media2 and ISP device /dev/media0
+[19:47:47.061288154] [5543] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[19:47:47.068408890] [5501] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[19:47:47.068937057] [5543] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.144:5000
+Press CTRL+C to quit
+192.168.0.141 - - [02/Jun/2025 20:24:06] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:07] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:07] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:09] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:13] "GET /set_video_mode?mode=threshold_overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:13] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:13] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:24:21] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:21] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:22] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:22] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:23] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:23] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:24] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:25] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:25] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:25] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:25] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:26] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:28] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:28] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:28] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:28] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:29] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:29] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:29] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:32] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:32] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:35] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:35] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:35] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:36] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:36] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:41] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:43] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:43] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:43] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:43] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:45] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:45] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:45] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:46] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:46] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:46] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:46] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:47] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:47] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:24:49] "GET /video_feed HTTP/1.1" 200 -
+[19:49:24.644471960] [5764] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[19:49:24.671587130] [5789] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[19:49:24.673781981] [5789] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media2 and ISP device /dev/media0
+[19:49:24.673889925] [5789] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[19:49:24.680283699] [5764] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[19:49:24.680752384] [5789] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.144:5000
+Press CTRL+C to quit
+192.168.0.141 - - [02/Jun/2025 20:25:43] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:25:44] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:25:47] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:47] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:48] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:50] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:50] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:56] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:56] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:56] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:57] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:57] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:58] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:58] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:58] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:25:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:01] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:02] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:03] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:03] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:11] "GET /set_video_mode?mode=threshold_overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:11] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:26:11] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:26:21] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:43] "GET /set_motion_threshold?value=50 HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:26:47] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:26:56] "GET /set_motion_low_threshold?value=1 HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:27:02] "GET /set_motion_low_threshold?value=3 HTTP/1.1" 204 -
+198.235.24.92 - - [02/Jun/2025 20:38:37] "GET / HTTP/1.0" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:29] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:31] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:31] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:31] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:44] "GET /set_video_mode?mode=overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:44] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:44] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:54:50] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:50] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:52] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:55] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:56] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:56] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:56] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:57] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:57] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:57] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:58] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:58] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:58] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:58] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:54:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:07] "GET /set_video_mode?mode=threshold_overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:07] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:55:07] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:55:11] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:11] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:11] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:12] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:12] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:13] "GET /set_video_mode?mode=overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:14] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:55:14] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:55:15] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:15] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:15] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:16] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:16] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:17] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:17] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:17] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:19] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:19] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:19] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:20] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:22] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:55:22] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:57:16] "GET /set_motion_low_threshold?value=1 HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:57:16] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:57:23] "GET /set_video_mode?mode=threshold_overlays HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 20:57:24] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:57:24] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:57:25] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 20:57:34] "GET /set_motion_low_threshold?value=2 HTTP/1.1" 204 -

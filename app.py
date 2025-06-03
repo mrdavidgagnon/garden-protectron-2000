@@ -56,6 +56,7 @@ MOTION_CONSECUTIVE_FRAMES = 2
 motion_consecutive_count = 0
 last_motion_box = None
 CONSECUTIVE_MOTION_DETECTION_BUFFER = 1.5  # 50% larger region
+MOTION_LOW_THRESHOLD = 4  # Default value for the lower cutoff
 
 # --- pigpio Setup ---
 pi = pigpio.pi()
@@ -170,11 +171,12 @@ def detect_motion(prev_gray, frame, threshold):
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
     
     # Mask out high-brightness pixels (e.g., > 230)
-    brightness_mask = (gray < 230).astype(np.uint8)  # 1 where not too bright, 0 where too bright
+    brightness_mask = (gray < 230).astype(np.uint8)
     masked_gray = gray * brightness_mask
     masked_prev = prev_gray * brightness_mask
     frame_delta = cv2.absdiff(masked_prev, masked_gray)
-    thresh = cv2.threshold(frame_delta, 3, 255, cv2.THRESH_BINARY)[1]
+    # Use MOTION_LOW_THRESHOLD for the lower cutoff
+    thresh = cv2.threshold(frame_delta, MOTION_LOW_THRESHOLD, 255, cv2.THRESH_BINARY)[1]
     thresh = cv2.dilate(thresh, None, iterations=2)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     motion_boxes = []
@@ -391,6 +393,9 @@ def gen_frames():
                             timestamp = int(time.time() * 1000)
                             filename = os.path.join(folder, f"motion_{timestamp}.png")
                             cv2.imwrite(filename, crop)
+                            # Save the full frame as well
+                            full_frame_filename = os.path.join(folder, f"fullframe_{timestamp}.png")
+                            cv2.imwrite(full_frame_filename, frame_for_motion)
                 else:
                     # No motion detected, reset counter and box
                     motion_consecutive_count = 0
@@ -577,6 +582,12 @@ HTML_PAGE = """
         <label for="auto-scan">Auto Scan:</label>
         <button id="auto-scan-btn" onclick="toggleAutoScan()">{{ 'ON' if auto_scan else 'OFF' }}</button>
     </div>
+    <div>
+        <label for="motion-low-threshold">Motion Threshold Low Cutoff: <span id="motion-low-threshold-value">{{ motion_low_threshold }}</span></label>
+        <input type="range" min="1" max="50" value="{{ motion_low_threshold }}" id="motion-low-threshold" step="1"
+               oninput="document.getElementById('motion-low-threshold-value').innerText=this.value"
+               onchange="fetch('/set_motion_low_threshold?value='+this.value)">
+    </div>
     </div>
     <script>
     function toggleAutoMotion() {
@@ -606,7 +617,8 @@ def index():
         auto_motion=AUTO_MOTION_ENABLED,
         auto_fire=AUTO_FIRE_ENABLED,
         auto_scan=AUTO_SCAN_ENABLED,
-        auto_scan_wait=AUTO_SCAN_WAIT
+        auto_scan_wait=AUTO_SCAN_WAIT,
+        motion_low_threshold=MOTION_LOW_THRESHOLD
     )
 
 @app.route('/video_feed')
@@ -681,6 +693,16 @@ def set_auto_scan_wait():
     try:
         value = int(request.args.get('value', 15))
         AUTO_SCAN_WAIT = max(5, min(value, 60))
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
+@app.route('/set_motion_low_threshold')
+def set_motion_low_threshold():
+    global MOTION_LOW_THRESHOLD
+    try:
+        value = int(request.args.get('value', 4))
+        MOTION_LOW_THRESHOLD = max(1, min(value, 50))
         return ("", 204)
     except Exception:
         return ("Invalid value", 400)

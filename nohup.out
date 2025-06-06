@@ -234,3 +234,856 @@ Press CTRL+C to quit
 192.168.0.141 - - [02/Jun/2025 20:57:24] "GET /video_feed HTTP/1.1" 200 -
 192.168.0.141 - - [02/Jun/2025 20:57:25] "GET /video_feed HTTP/1.1" 200 -
 192.168.0.141 - - [02/Jun/2025 20:57:34] "GET /set_motion_low_threshold?value=2 HTTP/1.1" 204 -
+[21:04:57.701113596] [8679] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[21:04:57.741520158] [8726] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[21:04:57.744377003] [8726] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media2 and ISP device /dev/media0
+[21:04:57.744490576] [8726] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[21:04:57.752185192] [8679] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[21:04:57.752875482] [8726] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.144:5000
+Press CTRL+C to quit
+192.168.0.141 - - [02/Jun/2025 21:41:15] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 21:41:15] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 21:41:18] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:18] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:20] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:21] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:21] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:22] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:22] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:26] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:26] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:27] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:27] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:27] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:29] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:29] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:29] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:29] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:30] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:30] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:30] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:30] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:31] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:31] "GET /calibrate_pan_tilt HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:33] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:35] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:36] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:39] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:40] "GET /calibrate_pan_tilt HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:42] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:42] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:42] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:43] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:44] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:49] "GET /set_motion_threshold?value=650 HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:53] "GET /set_motion_blur_size?value=27 HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:57] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.141 - - [02/Jun/2025 21:41:57] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [02/Jun/2025 21:41:57] "GET /video_feed HTTP/1.1" 200 -
+198.235.24.46 - - [02/Jun/2025 22:17:42] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [02/Jun/2025 22:42:09] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [02/Jun/2025 22:42:09] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [02/Jun/2025 22:42:44] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+89.248.163.108 - - [02/Jun/2025 22:55:30] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x02\x00\x00\x00')
+89.248.163.108 - - [02/Jun/2025 22:55:30] "  à          " 400 -
+192.168.0.225 - - [02/Jun/2025 23:13:27] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [02/Jun/2025 23:13:28] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [02/Jun/2025 23:16:00] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.103 - - [03/Jun/2025 00:29:07] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.0.103 - - [03/Jun/2025 00:29:07] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.103 - - [03/Jun/2025 00:29:16] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.103 - - [03/Jun/2025 00:37:30] "GET / HTTP/1.1" 200 -
+192.168.0.103 - - [03/Jun/2025 00:37:30] "GET /video_feed HTTP/1.1" 200 -
+167.172.220.110 - - [03/Jun/2025 01:26:54] "GET / HTTP/1.1" 200 -
+65.49.1.34 - - [03/Jun/2025 02:04:58] "GET / HTTP/1.1" 200 -
+65.49.1.31 - - [03/Jun/2025 02:05:14] "GET /favicon.ico HTTP/1.1" 404 -
+195.184.76.94 - - [03/Jun/2025 02:20:20] code 400, message Bad request version ('À#À¬À®À+À')
+195.184.76.94 - - [03/Jun/2025 02:20:20] "§ £O=ì=C//kA#m0tÁáFGÑ°ì~î»dl<çñ b4k*®À0cb  ï¾"í;0Õ£Öã¯ðöoÂ£   3 gÀÀ¢  9 kÀÀ£  E ¾  Ä ÀÀ	À#À¬À®À+À" 400 -
+195.184.76.93 - - [03/Jun/2025 02:20:24] "GET / HTTP/1.1" 200 -
+91.230.168.19 - - [03/Jun/2025 02:33:06] "GET /favicon.ico HTTP/1.1" 404 -
+64.227.156.31 - - [03/Jun/2025 07:50:43] "GET / HTTP/1.1" 200 -
+64.227.156.31 - - [03/Jun/2025 07:50:44] "GET /favicon.ico HTTP/1.1" 404 -
+[0:01:50.797218893] [1085] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[0:01:50.852097291] [1200] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:01:50.861588673] [1200] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media1 and ISP device /dev/media2
+[0:01:50.863115476] [1200] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[0:01:50.886951405] [1085] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[0:01:50.896853665] [1200] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Can't connect to pigpio at localhost(8888)
+
+Did you start the pigpio daemon? E.g. sudo pigpiod
+
+Did you specify the correct Pi host/port in the environment
+variables PIGPIO_ADDR/PIGPIO_PORT?
+E.g. export PIGPIO_ADDR=soft, export PIGPIO_PORT=8888
+
+Did you specify the correct Pi host/port in the
+pigpio.pi() function? E.g. pigpio.pi('soft', 8888)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Traceback (most recent call last):
+  File "/home/djgagnon/Development/garden-protectron-2000/app.py", line 66, in <module>
+    raise RuntimeError("Failed to connect to pigpio daemon")
+RuntimeError: Failed to connect to pigpio daemon
+[0:02:45.985747578] [1396] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[0:02:46.012413957] [1423] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:02:46.014528429] [1423] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media1 and ISP device /dev/media2
+[0:02:46.014627476] [1423] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[0:02:46.020961953] [1396] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[0:02:46.021432565] [1423] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Can't connect to pigpio at localhost(8888)
+
+Did you start the pigpio daemon? E.g. sudo pigpiod
+
+Did you specify the correct Pi host/port in the environment
+variables PIGPIO_ADDR/PIGPIO_PORT?
+E.g. export PIGPIO_ADDR=soft, export PIGPIO_PORT=8888
+
+Did you specify the correct Pi host/port in the
+pigpio.pi() function? E.g. pigpio.pi('soft', 8888)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Traceback (most recent call last):
+  File "/home/djgagnon/Development/garden-protectron-2000/app.py", line 66, in <module>
+    raise RuntimeError("Failed to connect to pigpio daemon")
+RuntimeError: Failed to connect to pigpio daemon
+[0:03:41.584551042] [1555] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[0:03:41.611196723] [1579] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:03:41.613375339] [1579] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media1 and ISP device /dev/media2
+[0:03:41.613475674] [1579] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[0:03:41.619738103] [1555] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[0:03:41.620233802] [1579] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.144:5000
+Press CTRL+C to quit
+192.168.0.141 - - [03/Jun/2025 09:44:46] "GET / HTTP/1.1" 200 -
+192.168.0.141 - - [03/Jun/2025 09:44:47] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [03/Jun/2025 09:44:48] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.141 - - [03/Jun/2025 09:44:54] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:44:56] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:44:56] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:44:58] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:45:01] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:45:03] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:45:04] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:45:07] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.141 - - [03/Jun/2025 09:45:11] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.97.47 - - [03/Jun/2025 11:33:13] "GET / HTTP/1.1" 200 -
+104.28.97.47 - - [03/Jun/2025 11:33:14] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.47 - - [03/Jun/2025 11:33:14] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+104.28.97.47 - - [03/Jun/2025 11:33:14] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+205.210.31.108 - - [03/Jun/2025 15:01:49] "GET / HTTP/1.0" 200 -
+104.28.48.61 - - [03/Jun/2025 16:14:45] "GET / HTTP/1.1" 200 -
+104.28.48.61 - - [03/Jun/2025 16:14:45] "GET /video_feed HTTP/1.1" 200 -
+3.231.151.78 - - [03/Jun/2025 16:17:36] "GET / HTTP/1.1" 200 -
+104.28.48.61 - - [03/Jun/2025 16:17:51] "GET / HTTP/1.1" 200 -
+104.28.48.61 - - [03/Jun/2025 16:17:51] "GET /video_feed HTTP/1.1" 200 -
+108.147.100.130 - - [03/Jun/2025 16:17:51] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.48.61 - - [03/Jun/2025 16:17:57] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.61 - - [03/Jun/2025 16:17:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.61 - - [03/Jun/2025 16:18:01] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.61 - - [03/Jun/2025 16:18:09] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:03:54] "GET / HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 17:03:55] "GET /video_feed HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 17:04:00] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:02] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:04] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:05] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:05] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:08] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:11] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:31] "GET /toggle_auto_motion HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:04:32] "GET / HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 17:04:32] "GET /video_feed HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 17:05:12] "GET /toggle_auto_motion HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 17:05:13] "GET / HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 17:05:13] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.1 - - [03/Jun/2025 20:01:46] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.103.62 - - [03/Jun/2025 20:01:47] "GET /video_feed HTTP/1.1" 200 -
+172.226.179.22 - - [03/Jun/2025 20:02:06] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:12] "GET / HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 20:02:12] "GET /video_feed HTTP/1.1" 200 -
+104.28.48.60 - - [03/Jun/2025 20:02:20] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:24] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:25] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:27] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:28] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+104.28.48.60 - - [03/Jun/2025 20:02:29] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+[0:02:14.085220195] [1181] [1;32m INFO [1;37mCamera [1;34mcamera_manager.cpp:326 [0mlibcamera v0.5.0+59-d83ff0a4
+[0:02:14.150140616] [1252] [1;33m WARN [1;37mRPiSdn [1;34msdn.cpp:40 [0mUsing legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:02:14.153637751] [1252] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:447 [0mRegistered camera /base/soc/i2c0mux/i2c@1/ov5647@36 to Unicam device /dev/media2 and ISP device /dev/media1
+[0:02:14.153817550] [1252] [1;32m INFO [1;37mRPI [1;34mpipeline_base.cpp:1121 [0mUsing configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[0:02:14.177383263] [1181] [1;32m INFO [1;37mCamera [1;34mcamera.cpp:1205 [0mconfiguring streams: (0) 1024x760-XBGR8888 (1) 1296x972-SGBRG10_CSI2P
+[0:02:14.179813903] [1252] [1;32m INFO [1;37mRPI [1;34mvc4.cpp:622 [0mSensor: /base/soc/i2c0mux/i2c@1/ov5647@36 - Selected sensor format: 1296x972-SGBRG10_1X10 - Selected unicam format: 1296x972-pGAA
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.144:5000
+Press CTRL+C to quit
+192.168.0.231 - - [05/Jun/2025 08:56:43] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:56:44] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:56:44] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.0.231 - - [05/Jun/2025 08:56:45] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:56:47] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:56:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:01] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:02] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:13] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:13] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:14] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:14] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:15] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:16] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:24] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:34] "GET /set_motion_threshold?value=550 HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:35] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:57:35] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:57:36] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:57:42] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:43] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:43] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:58:44] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 08:58:45] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:46] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:49] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:51] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:53] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 08:58:54] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:01:57] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:01:59] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:04] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:06] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:09] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:11] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:14] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:20] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:05] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:05] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:05] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:05] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:08] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:08] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:08] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:11] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:11] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:12] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:17] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:23] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:27] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:03:27] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:03:27] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:04:08] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:09:48] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:09:49] "GET /solinoid_pulse HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:10:01] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:10:02] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:10:03] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:10:04] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [05/Jun/2025 09:10:05] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:10:05] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [05/Jun/2025 09:10:07] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:00:43] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:00:43] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:00:51] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:00:52] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.97.46 - - [05/Jun/2025 11:00:53] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:00:58] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:00] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:00] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:01] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:04] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:12] "GET /toggle_auto_scan HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:13] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:01:13] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:01:26] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:37] "GET /toggle_auto_scan HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:37] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:01:38] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:01:40] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:41] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:43] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:45] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:48] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:51] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:52] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:53] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:54] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:57] "GET /solinoid_pulse HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:01:57] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:00] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:05] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:06] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:08] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:09] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:10] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:13] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:14] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:14] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:14] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:16] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:16] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:16] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:17] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:17] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:17] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:18] "GET /pan_step?direction=right HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:19] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:19] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:19] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:20] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:20] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:20] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:20] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:22] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:22] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:22] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:23] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:25] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:25] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:26] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:36] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:38] "GET /solinoid_auto3 HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:45] "GET /toggle_auto_motion HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:02:45] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:02:45] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:03] "GET /toggle_auto_fire HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:03:03] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:04] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:20] "GET /set_video_mode?mode=threshold_overlays HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:03:20] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:20] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:24] "GET /set_video_mode?mode=contours_overlays HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:03:24] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:25] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:27] "GET /toggle_auto_motion HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:03:27] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:27] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:28] "GET /toggle_auto_fire HTTP/1.1" 204 -
+104.28.97.46 - - [05/Jun/2025 11:03:28] "GET / HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:28] "GET /video_feed HTTP/1.1" 200 -
+104.28.97.46 - - [05/Jun/2025 11:03:29] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+172.226.192.106 - - [05/Jun/2025 11:03:44] "GET /set_video_mode?mode=overlays HTTP/1.1" 204 -
+172.226.192.106 - - [05/Jun/2025 11:03:45] "GET / HTTP/1.1" 200 -
+172.226.192.106 - - [05/Jun/2025 11:03:46] "GET /video_feed HTTP/1.1" 200 -
+172.226.192.106 - - [05/Jun/2025 11:03:50] code 400, message Bad request version ('ª')
+172.226.192.106 - - [05/Jun/2025 11:03:50] "  ü¹ôábÎ°OÝMa	­^i¯É4m¼?lë¾Ä Ç lw÷·¹{uBIûÇ0nÇÎ·DCª" 400 -
+172.226.192.106 - - [05/Jun/2025 11:03:50] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\\')
+172.226.192.106 - - [05/Jun/2025 11:03:50] "  ü\üâ°¸äX:Æ~ÏNi" 400 -
+172.226.192.106 - - [05/Jun/2025 11:03:51] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ïz/üÄ»\x03\x0fU\x99®íU\x04>òû´Æ\x8aW\x04°\x18¨\x97´µ(%]¢')
+172.226.192.106 - - [05/Jun/2025 11:03:51] "  üÏz/üÄ»U®íU>òû´ÆW°¨´µ(%]¢ rTµ%k,æW±k!ÖcÅ3ZLÀ»wkVÊ¸% *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:03:51] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03®¢¶Ãçp\x88\x9aÆ')
+172.226.192.106 - - [05/Jun/2025 11:03:51] "  ü®¢¶ÃçpÆ" 400 -
+104.28.97.46 - - [05/Jun/2025 11:03:57] code 400, message Bad request version ('5ñ\x99òi@\x95Xí\x8f\x98\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:03:57] "  üÂ°'öõKTÌk3ºÓtoéÔ,³èçû å¶L\l¼ÉX ²Y¼ù5§`` 5ñòi@Xí *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:03:57] code 400, message Bad request version ('gØÀÂýtO)«Üñ\x0e®û±\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:03:57] "  ü2fBïì/Áè8¢ü@ÅãTÀ¥ÐBn¸ëêKú oWcçÂèçÑYräÇgØÀÂýtO)«Üñ®û± *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:03:57] code 400, message Bad request version ('\x8em\x02\x99u>1\x7f¥ü1\x8dö\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:03:57] "  üU(gKàéE®Ùg5ÄóB>¦íhÑþóñú ów¨ûÇÄh'×oÜð~Õmu>1¥ü1ö *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:03:57] code 400, message Bad request version ('Ìµ=\x05è\x12Èæ>s¿\x08È¹\x10|56\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:03:57] "  üÏÄ	[Iß"mz!3®{þ¥m+YÈCÛÍS?îJ Ü÷0 þ|Ö+~Ìµ=èÈæ>s¿È¹|56 *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('\\\x10<pO\x05\x00!Ê¬\x10,\x00*')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  ü¡E>¾0MÿÅÀØþïåé5ó·ÎÓ#× ÔMí²@<J(u±u^³ \<pO !Ê¬, *" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ("'\x0fp<Nè(\x01\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  ü²µuTè¿mp¢½ïÿÄ\6ÕÂáA#«ß2 \@Hr³Mf¹i²³a4â'p<Nè( *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:31] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03fo\x81\x14üæü×')
+172.226.192.106 - - [05/Jun/2025 11:04:31] "  üfoüæü×" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('>Í\x92\x16.UÉø\x95÷Úâx©V¬×a\xadñ\x02\x9f\x8fñ\x82-Z\x95\x11ûN\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  ü"ål3 T¬,÷Å1à&ÐªÿNv]ZtÁ"cñz >Í.UÉø÷Úâx©V¬×a­ññ-ZûN *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('-òOî:Þò2\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:31] "  ü0bAY;Êh|wÍ© .Kõ¾ÕôeçÆàÔÊVì 'Ï	.EÜ§iµ æfd9-òOî:Þò2 *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('\x91ÒÑ×esü¡\x00*ZZ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  üÕû·p,Ï³y¥ ôYr×êO.#Ódgùë¡ïz/ ¢qËþù©­&kpø´¿Ðõ§BøÒÑ×esü¡ *ZZÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('\x8aâ!\x83ÔP\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  ü»xàõkÑßX¯*4T¢¶Ñ¥(ÈêÒØ1ù½H {yºêÏ&É QïóÜyÖÎ+g¯Dê â!ÔP *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:31] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x032ÿ\x80læ°Ô®\x98:\x03÷uó\x99ËÐ¡§!¤k\\þØëÚÁì\x0f\x96H')
+172.226.192.106 - - [05/Jun/2025 11:04:31] "  ü2ÿlæ°Ô®:÷uóËÐ¡§!¤k\þØëÚÁìH ÊÀ>¡hdn"]æo^åUÖö]¡0(ÈÔõ»¶½ *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('\x00*')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  üÊbv­k-|#0FïÐ@fãAëïËÔq#ö¬Ãp ÁZßÇ~ø;ÓdíRp×þâI&ðt/Ê#Ìýî *" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('\x8f\x19¤Ö$è\x99ÆtôZj\x92ÆÇcÑ¢IÄàc´0Æ~Ór\x92\x99\x88÷\x00*JJ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:31] "  ü»k&uusA4HÛªõ*ñshOB)»Ç ¤Ö$èÆtôZjÆÇcÑ¢IÄàc´0Æ~Ór÷ *JJÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('Ç\x8d\x95\x17ú\x00*JJ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:31] "  ü#¥Ì¯ýÁ9ªFTÂ~ÄÚÞ>¤"K~]8ûÝ Å÷»'ºz2v¡£Ò#üèo)8Yn Çú *JJÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:31] code 400, message Bad request version ('Óýtu\x00hð\x07[\x84þ[\x0f¸î\x19\x8e\x95«\x97N\x06qÁÕk;Q*ÎÎ\x9b\x00*')
+172.226.192.106 - - [05/Jun/2025 11:04:31] "  üH§)Iíä²L±6\%õs?û¼­ÇÉÔ^ir Óýtu hð[þ[¸î«NqÁÕk;Q*ÎÎ *" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('YÊþ²\x07r\x83¬¸r\x1bÎ\x00*\x1a\x1a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  üc¸y±$AÜS?×3}·ºiû2Â},ÈîÆwùËUa¯@ EÖ½ëp§¯E®^pù÷YÊþ²r¬¸rÎ *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('£Vùr`:}¹\x18ÊvI\x03\x16Ùà')
+172.226.192.106 - - [05/Jun/2025 11:04:32] "  ü9iòa¹ý¦¬Ê{ðU3.¼ãæ	Nu­WëÜPP5 £Vùr`:}¹ÊvIÙà" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('ü\x05\x8dº;\x96\x80.¨Ý-\x15P¯;')
+172.226.192.106 - - [05/Jun/2025 11:04:32] "  ü ±éñý´»PµÝ@¬ÌÛßÖÑjX«ÿ= üº;.¨Ý-P¯;" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ("aIÿ]W=éUr¹\\°RäØP¶<\x91È'Âü\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  üÃa:3éfc.ô¾ïgsßanÖÝ²;j{ áõ&ßÞøaIÿ]W=éUr¹\°RäØP¶<È'Âü *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('ÿÁ\x89\x84éÎ\x00*ÊÊ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  ü³	Þ¬'7§ñ¹åÐË¨ÁXE,À´Ó©¿á°þ Ã l¯¥;¢~RÔj­+×t3´³·ÏÿÁéÎ *ÊÊÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('\x11\x9b|\x00*ZZ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:32] "  ü7Íç±ÂRrIÔR8-cús,|µì?} §÷ôñêD¢Ê)ã½(°©.»Óx!/| *ZZÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('aò\x94é\x92U8\x83,ï\x00*::\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  ü7ácG EvØxøÁºJð¶ÖY¢ ÆIZÞ ®g%pÉ] ¢°ï!wOq`Òe¡ aòéU8,ï *::À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x16i\x00×±çPæ=2ñùµ«\x14PC0\x9eF\x86_#yØz0R\x872\x01')
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  üi ×±çPæ=2ñùµ«PC0F_#yØz0R2 é`xm®¹5ËMe3" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:32] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ì¬\x95\x87åqÒÕ\x0e¦\x89\x84{B\x89Ý;\'\x9f"¦\x089ÖÊ')
+172.226.192.106 - - [05/Jun/2025 11:04:32] "  üÌ¬åqÒÕ¦{BÝ;'"¦9ÖÊ÷" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('í}þ\x9dL¼`ø¢\x0eXÂ¦~\x9f\x8c\x92\x9fD{SµoWÃÍÒ|\x9dw\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:32] "  ü,JH«ørß«óÙ|Lä¨ÅÂ-9½î÷¿àå¹dè© êí}þL¼`ø¢XÂ¦~D{SµoWÃÍÒ|w *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:32] code 400, message Bad request version ('\x0eÔ\x7f%&h\x9cÂ\x13\x05Áô£Ä1Ý÷&f\x95ý¦«\x8a®\x169\x890[È¡\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:32] "  üó¨ ´¡7Ííe jBì²Rê­¥¨g\e¦Îs Ô%&hÂÁô£Ä1Ý÷&fý¦«®90[È¡ *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:33] code 400, message Bad request version ("\xadÝÝ¥\x8dÔ}`±1UÏÚ¨'%?;\x00*ZZ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+104.28.97.46 - - [05/Jun/2025 11:04:33] "  ü¶¬së À*Í½àM>p]¹%àXÊº¿v 0ãËaÌa"÷NëÑ­ÝÝ¥Ô}`±1UÏÚ¨'%?; *ZZÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:33] code 400, message Bad request version ('ñ\x976»´ÉâL\x00*ZZ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:33] "  ü |¼zAè`. Xè@±>2M|â5)Ö&OÜjo§ rÜ÷ TÒé3YU9@©òaÜÈñ6»´ÉâL *ZZÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:33] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ï.')
+104.28.97.46 - - [05/Jun/2025 11:04:33] "  üÏ." 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:33] code 400, message Bad request version ('\x86®õ\x18²\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:33] "  üÝ/|ÑvªK³IàzÛ¥¸A4`ÍØcÏ¾´ ´{öI¾î¸ÁÚkj¼/FHJj²©i	®õ² *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:33] code 400, message Bad request version ('\x94\x91Ýçà5½ÛUÖcÖ\x00\x91ª\x97ßé\x9c\x02Ã\x0eüª\x89)Ô$\x87j\x15\x93\x00*ÚÚ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:33] "  üêr0þ­>þQÔ}x­Ò÷éñ®Ó4|ÞûÀFÞ Ýçà5½ÛUÖcÖ ªßéÃüª)Ô$j *ÚÚÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:33] code 400, message Bad request version ('T\x88\x01FþG§¹ô£¢Í+h|\x9fv£ý\x04.¦\x00&Þk¾õ\x00*êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:33] "  ü$?O4ºM¦GÈÈÄóH_QL¸ÿÌÔá³Â	B ]Û½TFþG§¹ô£¢Í+h|v£ý.¦ &Þk¾õ *êêÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('p`óá¥Í\x02¹¤\x00*')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üÂ kÈæZ#Kcomüñö2ZbFE<-P  zêjz /ËóÎ­ó¹£#díÞê	p`óá¥Í¹¤ *" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('\x9cB\x13Ä·\x98\x02Mo¸\x19`r\x9a&ç,<R\x91\x9e3\x8f#öLÍÚNÕ\xadv\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ürD[D½B¦Þ` 3¨è<å÷x6ì)ÛsµXöë¸è BÄ·Mo¸`r&ç,<R3#öLÍÚNÕ­v *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('u\x90\x9a\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  üÃ¢ <$ ÎdáÜ¯`bÖÍShl¥óÌ$8ýé(ÝÃË H~\¤ÃÿÀÀ'°Ç5¿ÔÕ®¼u *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('ôeì±µ·Ýsnë\x05\x00*ºº\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üiÞiªXëtÏAL¾ùÌQ±G|äÏ5À£9 ã)§Ìñ)tjÓ/Ò¸èI	\ôeì±µ·Ýsnë *ººÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('µ')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  üAË,t¡D>i±í[Tô¬M¡þµ¼­þ µ" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('3ÜÙ\x05½¬8\x9f\x96Á\x80H4')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  ü è8íÀdxéÁ4ïÎÏ7wä@ÙLM 5 T 3ÜÙ½¬8ÁH4" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('Ü\x7fÍÉ]ÖÇ¨ÄÇT\x18\x10+gï¸P\x8a]\x86\x19Â\x94óÚY\x9cèQÁê\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  üv/?è"Ç8ð¨mW´D,øSßü!»>Ê:Úo¼Å ÜÍÉ]ÖÇ¨ÄÇT+gï¸P]ÂóÚYèQÁê *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('ã//aW\x19½Bu½\x08\x08ax\x07Ç¼ùP¢+\x7fÿrÓpÍc\x8fë³§\x00*')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ü2ì¦³¶°µXf·UÖô?±EgÃGÐA¬äùaü,i ã//aW½Bu½axÇ¼ùP¢+ÿrÓpÍcë³§ *" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('±\x9eèyGªî!\x00*êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üP×ÔL«Ùq÷ÑA-ýÿ+=Ï^¿öOë 2vBÞa³ëdí[ï</g¼±ê*Ä±èyGªî! *êêÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('à\x00*zz\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  ü­Åë±°Èö¢pêÇ^nàíîðÏLÁ-»?z¡3áÉ Cá{0Ú¼%Ç_à!Æ¼4Êt®í½	«Õ$à *zzÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('Ûª\x82¨vÞÌÚgµ+¢j¬jäýlÇ#yS\x87U\x16´BÞ5\x98Wà\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  üM³?<y´p^£Øü¶d @zWRç°M@LL5ùqÙ Ûª¨vÞÌÚgµ+¢j¬jäýlÇ#ySU´BÞ5Wà *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('òÅ')
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('\x17eN\x01»b\x810\x05\x12G-\x8fÒ>?Ço¥?¦ÃkAÛOx~RJÖ2\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  ü7*¸½	~ü=Áï:î­à	òÅ" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ü-_ùq©0½ÏH®£ûpòÚtt´`¹X\kã eN»b0G-Ò>?Ço¥?¦ÃkAÛOx~RJÖ2 *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('^\x88IK9\x86\x8bâì¸·Çè\x96!\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ür /ûõ9òä+}¡	Ðæ?uºoe)ByGWUw XØ,k·VdÛ0¤?^IK9âì¸·Çè! *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ("W©Ùt\x12\x17\x10&\x03\x03\x9a\x01tºÿìqé'«\x99ãná¾CÉxj.\x81À\x00*")
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üÉÑÉ(²[¼óÿðu1éUâV¨ï¨TVôëÔäî, íl¸Ì/ÅLò\|¨ae+øíä]ÚÌ 7ñ  *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ük¹¨øùX Ûu	Þëð.ÉTèÿIåNtn W©Ùt&tºÿìqé'«ãná¾CÉxj.À *" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('©?¼\x7f\x83ìßw\x83,i\x9eÛÚ}¸þ\x8e\x16àþ¬\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üs<£rG4d9)2¡Wº¹­A50mHJþËU ¨þWîÌ@L ©?¼ìßw,iÛÚ}¸þàþ¬ *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('~fXSW\x8dóòK\x9f]\x80ÙH\x04à0«Î\x94\x00*êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ü¯¸äî6@sw,¼òÅX0C þâ -¢^Ôõ ÇB?Zu1x~fXSWóòK]ÙHà0«Î *êêÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('Ñ|¨¸óë\x07L«\x04~\x7fåÁ¦(\x86ÝÕ²µú\x19èM¹Üß¡¹:u\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  üÄÛHý _©±|0S8QÙU*e£H¬o²ê®ô Ñ|¨¸óëL«~åÁ¦(ÝÕ²µúèM¹Üß¡¹:u *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:36] code 400, message Bad request version ('Ñ5é\x9fÝý?\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:36] "  ü]Í¹1Ô®su¦oÊÖ#mú6ôØÕ9· +[;wö=k`J$§EcÆó?æÔÑ5éÝý? *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:36] code 400, message Bad request version (',\x8fÒ\x08/Å:\\~\x92»\x95ºNuÜLRXÉ\x89\x96y´$YÙº\x88¦at\x00***\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:36] "  ü£XÀ"vXi­\@Q ¯H¤T1ø#ºMÕ ,Ò/Å:\~»ºNuÜLRXÉy´$YÙº¦at ***À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version (':ÒÕ/â^z\x83Âërÿ\x9f2^\x8e9@E\x03ÿ\x8eÑ\x19\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  üüô#.ÖÎL¦.sô ûâÆ[7 T#Z¦âË%L òì´Q5 :ÒÕ/â^zÂërÿ2^9@EÿÑ *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('W°¥T3°\x00*\x1a\x1a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03çKsèý')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  ü«i¸oy	!wS][¿\/±®­<a$pñXèW` ¸æõ{a÷¿'G`º=¬m»ç]Ñ¦W°¥T3° *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üçKsèý" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03rUÈZó`_2ÝCñg\x82\x89')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  ürUÈZó`_2ÝCñgQbä¸þ¾ð2K¤çþ" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ("õ\x03àCí5ã3\x8c_\x13ë¢ÐÂ'\x88\x00*ÚÚ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  ü÷¸ýÏ4ª6V7%¬¿ùZM»§@KZRg A"¥»~D®;0? õàCí5ã3_ë¢ÐÂ' *ÚÚÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('(\x15©\x98\x884þz\x82ù&íq>@l\xad·rP;ã\x94=Y\x15¢\x00*::\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üe©é¿Põ¤à ïO|ß[tÉpI Æª«	(©4þzù&íq>@l­·rP;ã=Y¢ *::À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03´r½\x92>¬ñ¥GãjKOI.d|+xE1¶Ú\x82X\x83\x14\x90²)D¼')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  ü´r½>¬ñ¥GãjKOI.d|+xE1¶ÚX²)D¼ ;ô_ùò«ÎACCÀ-±°¸M5T2{ZËæ *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('Ñ´d\x87b>\x99ÕqÚÃvdB\x00*')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üøkv=©Ò	¼~Ç©yÐç-îjn¼ö¢Jw4 ±Sá5X	Àèê+µ]qo4ÅÑ´db>ÕqÚÃvdB *" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  ü8»!];¿ÉIECâ ¥	êýªæ é5ÝóÞ§N° Ö"æëc²¢/ÿ õØÐïÁÁ!ußÿi aÈ;xí *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ("VF§*\x81r\x95\x15\x93èæµÕJ^é#ü\x93*^\x14ÏàÆ'\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  üW\µNq5@2Å±}»ihäÖ×	¯úüRJ¤§õ Ô9ÒòVF§*rèæµÕJ^é#ü*^ÏàÆ' *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('VeO\x98¯\x81\x9fö@°»^\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üùÿ4C4WÀ\«&?o¶*¦¯Ù;KQVüôË×üÍë´ ÉÌ1ËIn¯,¨H^Çh¢ë VeO¯ö@°»^ *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('\xad5\x1a\x05²Â´\x9f$')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  ü»¥>IÂ Qc%ÌPxþÙ^¡=FØ¤î«§¥AìÞÁÍ W ­5²Â´$" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version (']°À´}±l~ä´\x84\x00*\x1a\x1a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üõ5[hÌÔ!!c'_I(âlzçÀ]MRe OËd9-ÏSêØºÅÑV]°À´}±l~ä´ *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('(×ê\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  üíc,SEÂSü|·CloÀGÃ{ËG¶ä¶ .¨ÂB \ÖN_ëL£\úñT+êÇ7q^~º/<(×ê *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('\xad\x14(\x8a\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:37] "  üºeÂ I26Ùd#\vÐGÀ¹	j P29L6[ @d8j¥Á<°39g-¨æYFÆ¦­( *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('5G\x9c\x7f\x9fU\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] code 400, message Bad request version ('l¡Ñ1UÒVQ\x17÷v>4Û:\x81*±\x97pv^ÜG±Ui»Ó\x9eÀ\x9e\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  ü¿¤«Ì24a|uâ)fÛAývÑDÚ°@Ki ú¹é,tF?ä>íAø<4º¤ãù¦/+R 5GU *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:37] "  üNð[ÅMVÓÒk Ø.¡ãÈvï l¡Ñ1UÒVQ÷v>4Û:*±pv^ÜG±Ui»ÓÀ *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('Âù¡+Û\x00*êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  ü¦óÐg1«Øçº_­½t.GàgíJ¿ÆocZT ^J£FçßbëÛ F´Ø©bÞ¸¢Âù¡+Û *êêÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('\x87\x03³\x00*ÚÚ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üË$e\%PÌT&ãSxC$h¡t	Î3µá!Í0® m¨ÆÈ\±Ñ;{eÉ%&«¯û>ÖE´Àl³ *ÚÚÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('\x12\x7f\x16À\x96I\x8aL\x14Ì\x83áó\x99SD¹>ù\x00*ÚÚ\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  ü¦l%÷Zæ*}î2¼²b¥lúÍMlð?¾%ËÌØ ¤´yÞ0÷V#ÀILÌáóSD¹>ù *ÚÚÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('zI\x01\x11\x8bÊÝ¥|\x90g\x00*')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  ü«ý8/6ÛôfPèd ZeÆG¹p.MÜªFºá P=vn¥ÆDÝì7Gõ¢àzIÊÝ¥|g *" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\xad:\x99ùÊ³°ßN=:\x17Æ\x04¦4[iYXÝùÜX©½ÀØ\x00\x98õi')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  ü­:ùÊ³°ßN=:Æ¦4[iYXÝùÜX©½ÀØ õi l¥¥k{pþÁ" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('7®À\x00*êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üW·àµµÊø×ï½a®V9I5×¹	æ³__Ì& þÞäðsDó¢F_FÍi©I¯ü×IÂ7®À *êêÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request syntax ("\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03'\x192¨Øû±\x1bbÒpDÀÈ«\x9bÉ>^\x08\x9e$\x08²¼_\x93\x1f")
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  ü'2¨Øû±bÒpDÀÈ«É>^$²¼_" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03£MNô¹8¢Ô\x00ÝÄjä|vâ/£+\x8e\x00=ÚÚZæxê\x89ÈJ[')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  ü£MNô¹8¢Ô ÝÄjä|vâ/£+ =ÚÚZæxêÈJ[ ¡ØÝ'xÓ(û$é%XìJr]±ºîòu *ZZÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('&vl\x7fñgµö\x17*÷dç\x1bí$Ù6%ÐRM¡r½\x9ax¶(\x02.ª\x00*\x8a\x8a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üÃ¬ÆKýE+ývwÔ¼ëºÂ|Wõ &vlñgµö*÷dçí$Ù6%ÐRM¡r½x¶(.ª *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('Ê`·\x03Ô\x00*ªª\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üó`	~fÂMØhR¯¨ËipIµÏ<Á(j³| ²9ÑùgOïøH yÆ:³ù¤ñæRÊ`·Ô *ªªÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('²G\x8a{\x17ÿ«¬Oàûé1Ð\x82»pÉ0tñ¶¼/e\x82Çð°\x00***\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üßoÎL£(!q³wRNÊõy}ì<·yÇßdQM ß	²G{ÿ«¬Oàûé1Ð»pÉ0tñ¶¼/eÇð° ***À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03Ú0Æµ©z\x8a')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üÚ0Æµ©zU" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('ÍÊ\x1a".;\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üåíIºÝzf¦:%é`Rr&F­ÛÔ¡~Ú2oÅ9ý¡ ³¤!¦'Ñ(¶Ï¨ÿò×¶Y®¬§ò> ÍÊ".; *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x95\x8bGò/ÿ')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üGò/ÿ" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('\x1b\x16\x90¢\x95X\x95x]3\x1ad÷1ÅB$\x81BÏc\x05G(\x99ÐXuÎ1~ð\x00*\x1a\x1a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üWC<GÚ¦.ÒWF3× oÿFz½ó{«S8¸ ¢Xx]3d÷1ÅB$BÏcG(ÐXuÎ1~ð *À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03JNë\x169¢PÄ\x01$')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  üJNë9¢PÄ$" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('U\x96³#Æ±òýùA\x9e~0³')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üðºÐ8Ü®7>sÿ¥kwz¶-vÓ¬Ôb	daY U³#Æ±òýùA~0³" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('ë"¹tn£]°gÛ\x7f\x04ÚCâ°ÏZú\x037e|~\x0fµÁ\x95l¶\\Ñ\x00*::\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+172.226.192.106 - - [05/Jun/2025 11:04:38] "  üí¹r.ù·xÚS=6(÷(7$Gz12 à!(rmKb ë"¹tn£]°gÛÚCâ°ÏZú7e|~µÁl¶\Ñ *::À,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:38] code 400, message Bad request version ('l\x8aÝk½5e\x15T\x9c\x8d"^yaH&FÐ÷(q\'iqWý\x8eS\x9aaà\x00*jj\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:38] "  ü@û³{&1ë±Îºa°¥ó}¹³Ë6| lÝk½5eT"^yaH&FÐ÷(q'iqWýSaà *jjÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:39] code 400, message Bad request version ('µ\x9cº´\x15P\x95D¦ºq¡\x00*\x1a\x1a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+104.28.97.46 - - [05/Jun/2025 11:04:39] "  ü¾Ìa,Ë=Aê¥ºôUx»ý6·R~Î¡Dïú]¿di ÛË´.õ-ØjvÖ®h37Üµº´PD¦ºq¡ *À,À+Ì©À0À/Ì¨À" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:39] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03üàÕ\x9c\x98«¨Îù')
+172.226.192.106 - - [05/Jun/2025 11:04:39] "  üüàÕ«¨ÎùPj¡¢Ù´ò¯Àw/ò±ÙÀÐ" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:39] code 400, message Bad request syntax ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03<')
+104.28.97.46 - - [05/Jun/2025 11:04:39] "  ü<" 400 -
+172.226.192.106 - - [05/Jun/2025 11:04:39] code 400, message Bad request version ("d\x03|D¥>2ô%ÄÝÉÉ\x7f\xadc$n\x9e\x89\x87\x1a#·Ñ\x12\x8a8G'\x9bU\x00*úú\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À")
+172.226.192.106 - - [05/Jun/2025 11:04:39] "  üËR²T¬óô	òÏÏÜü«ÿ6;Ò«ø¯þcjÿûÖ; d|D¥>2ô%ÄÝÉÉ­c$n#·Ñ8G'U *úúÀ,À+Ì©À0À/Ì¨À" 400 -
+104.28.97.46 - - [05/Jun/2025 11:04:50] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+104.28.97.46 - - [05/Jun/2025 11:04:50] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+104.28.97.46 - - [05/Jun/2025 11:04:50] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.97.46 - - [05/Jun/2025 11:04:51] "GET /video_feed HTTP/1.1" 200 -
+128.104.149.107 - - [05/Jun/2025 11:04:55] "GET / HTTP/1.1" 200 -
+128.104.149.107 - - [05/Jun/2025 11:04:55] "GET /video_feed HTTP/1.1" 200 -
+128.104.149.107 - - [05/Jun/2025 11:04:55] "GET /favicon.ico HTTP/1.1" 404 -
+128.104.149.107 - - [05/Jun/2025 11:04:57] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:04:58] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:04:58] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:04:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:04:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:05:00] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:05:00] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:05:01] "GET /pan_step?direction=left HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:05:29] "GET /toggle_auto_scan HTTP/1.1" 204 -
+128.104.149.107 - - [05/Jun/2025 11:05:29] "GET / HTTP/1.1" 200 -
+128.104.149.107 - - [05/Jun/2025 11:05:29] "GET /video_feed HTTP/1.1" 200 -
+198.235.24.83 - - [05/Jun/2025 14:18:39] "GET / HTTP/1.0" 200 -
+147.185.132.120 - - [05/Jun/2025 20:53:12] "GET / HTTP/1.1" 200 -
+104.28.104.86 - - [05/Jun/2025 21:18:23] "GET / HTTP/1.1" 200 -
+166.199.111.161 - - [05/Jun/2025 21:18:24] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.104.86 - - [05/Jun/2025 21:18:24] "GET /video_feed HTTP/1.1" 200 -
+104.28.104.86 - - [05/Jun/2025 21:19:01] "GET /toggle_auto_scan HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:03] "GET / HTTP/1.1" 200 -
+104.28.104.86 - - [05/Jun/2025 21:19:03] "GET /video_feed HTTP/1.1" 200 -
+104.28.104.86 - - [05/Jun/2025 21:19:06] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:09] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:10] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:12] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:14] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:15] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:18] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:19] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:21] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:22] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:24] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:25] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:29] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:31] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:32] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:33] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:36] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:37] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:40] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:41] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:42] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:44] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:46] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:48] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:49] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:50] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:57] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:19:59] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:01] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:04] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:06] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:08] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:10] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:13] "GET /pan_step?direction=left HTTP/1.1" 204 -
+104.28.104.86 - - [05/Jun/2025 21:20:33] "GET /set_motion_low_threshold?value=3 HTTP/1.1" 204 -
+167.94.146.51 - - [05/Jun/2025 21:37:30] code 400, message Bad request version ('À\x14À')
+167.94.146.51 - - [05/Jun/2025 21:37:30] " î  ê¥µ¶ È- ô0ddøÞ.¾û¦^~?($¦¬ tÕÌzÏ_Ô©¤õ8òÐTF=µÀOOVÝS &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+167.94.146.51 - - [05/Jun/2025 21:37:34] "GET / HTTP/1.1" 200 -
+167.94.146.51 - - [05/Jun/2025 21:37:38] "GET / HTTP/1.1" 200 -
+167.94.146.51 - - [05/Jun/2025 21:37:39] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.51 - - [05/Jun/2025 21:37:39] code 505, message Invalid HTTP version (2.0)
+167.94.146.51 - - [05/Jun/2025 21:37:39] "PRI * HTTP/2.0" 505 -
+167.94.146.51 - - [05/Jun/2025 21:37:43] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.51 - - [05/Jun/2025 21:37:43] code 400, message Bad request version ('À\x14À')
+167.94.146.51 - - [05/Jun/2025 21:37:43] " ÷  ós0b½Ëß¹ÌîÈ¼;õ®EÔ*<VbÍV!¿¥·¿¸ {u_yè5}*R^26³Q5dDyÇ &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+167.94.146.51 - - [05/Jun/2025 21:37:47] code 400, message Bad request version ('À\x14À')
+167.94.146.51 - - [05/Jun/2025 21:37:47] " î  êqÆÓÇFËÀ{§ªZ%á4#.>å)k×û\vT y bÍþX;D¹!^³báVgSA_þús.ü¹ &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+167.94.146.51 - - [05/Jun/2025 21:37:47] "GET /security.txt HTTP/1.1" 404 -
+167.94.146.51 - - [05/Jun/2025 21:37:47] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.51 - - [05/Jun/2025 21:37:48] code 400, message Bad request version ('0¨¦\x9aéÇblª¸\x11\x9a}(Å-\x88Iõ\x17Y·Vî¯ü')
+167.94.146.51 - - [05/Jun/2025 21:37:48] " ÷  óó40ìÌ×b¥÷zJw7°*?Ûs þN'(Ë 0¨¦éÇblª¸}(Å-IõY·Vî¯ü" 400 -
+166.199.111.161 - - [05/Jun/2025 21:52:59] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.104.86 - - [05/Jun/2025 21:53:00] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [05/Jun/2025 22:11:09] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [05/Jun/2025 22:11:10] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.1 - - [06/Jun/2025 00:13:39] "GET /favicon.ico HTTP/1.1" 404 -
+104.28.104.61 - - [06/Jun/2025 00:13:39] "GET /video_feed HTTP/1.1" 200 -
+65.49.1.144 - - [06/Jun/2025 04:06:26] "GET / HTTP/1.1" 200 -
+65.49.1.142 - - [06/Jun/2025 04:06:40] "GET /favicon.ico HTTP/1.1" 404 -
+206.168.34.80 - - [06/Jun/2025 04:36:15] code 400, message Bad request version ('À\x14À')
+206.168.34.80 - - [06/Jun/2025 04:36:15] " î  êFáÑ~@ãT<³ÁØð©á¡¼çUA*$õäìä ÿmßæöY½Þ8ÿ ëÆàÍGíkýóh½!}¾-ò &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+206.168.34.80 - - [06/Jun/2025 04:36:18] "GET / HTTP/1.1" 200 -
+206.168.34.80 - - [06/Jun/2025 04:36:25] "GET / HTTP/1.1" 200 -
+206.168.34.80 - - [06/Jun/2025 04:36:31] "GET /favicon.ico HTTP/1.1" 404 -
+206.168.34.80 - - [06/Jun/2025 04:36:31] code 505, message Invalid HTTP version (2.0)
+206.168.34.80 - - [06/Jun/2025 04:36:31] "PRI * HTTP/2.0" 505 -
+206.168.34.80 - - [06/Jun/2025 04:36:38] "GET /favicon.ico HTTP/1.1" 404 -
+206.168.34.80 - - [06/Jun/2025 04:36:39] code 400, message Bad request version ('À\x14À')
+206.168.34.80 - - [06/Jun/2025 04:36:39] " ÷  ó×ÀN böÀÞü	O)æS+.ÈÌ¨¶Ë;&Aãfv¯× U/s5÷®,x®ýÈâWpGocÈ¸.Wð &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+206.168.34.80 - - [06/Jun/2025 04:36:46] code 400, message Bad request version ('À\x14À')
+206.168.34.80 - - [06/Jun/2025 04:36:46] " î  êéùê4T%hÃTk9°êÅ9Rß°êFè½Ñérûz R:ExÙ¥ó'\îd´=ÂºÉß¼=©+ø¯/·¥ï &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+206.168.34.80 - - [06/Jun/2025 04:36:49] "GET /wiki HTTP/1.1" 404 -
+206.168.34.80 - - [06/Jun/2025 04:36:51] "GET /favicon.ico HTTP/1.1" 404 -
+206.168.34.80 - - [06/Jun/2025 04:36:52] code 400, message Bad request version ('À\x14À')
+206.168.34.80 - - [06/Jun/2025 04:36:52] " ÷  óYaFÍP=:fû_c@9é[òøþvxÄû¸n¡ ÙÒ¤Ø3\cJGz´Í¬¬Ca¹FñÐ­^c#1j^ &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+3.130.96.91 - - [06/Jun/2025 06:12:16] "GET / HTTP/1.1" 200 -
+3.130.96.91 - - [06/Jun/2025 06:15:18] "GET / HTTP/1.1" 200 -
+154.212.141.225 - - [06/Jun/2025 06:34:15] "GET / HTTP/1.1" 200 -
+3.132.23.201 - - [06/Jun/2025 07:04:47] "GET / HTTP/1.1" 200 -
+3.132.23.201 - - [06/Jun/2025 07:05:39] code 400, message Bad request version ('À\x14À')
+3.132.23.201 - - [06/Jun/2025 07:05:39] " {  wWäPóa]õuìWJ©ÑQ·Z/Á¦Ü~x±±  À/À+ÀÀÀÀ	ÀÀ" 400 -
+3.132.23.201 - - [06/Jun/2025 07:07:15] code 400, message Bad request syntax ('SSH-2.0-Go')
+3.132.23.201 - - [06/Jun/2025 07:07:15] "SSH-2.0-Go" 400 -
+3.132.23.201 - - [06/Jun/2025 07:07:55] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00{\x01\x00\x00w\x03\x037[ËE\x19\x15]*\xadï«øH^O\x8c\x83Ù\x00\x97T\x07Â\x8e\x89\x05\x18}'ðÔe\x00\x00\x1aÀ/À+À\x11À\x07À\x13À")
+3.132.23.201 - - [06/Jun/2025 07:07:55] " {  w7[ËE]*­ï«øH^OÙ TÂ}'ðÔe  À/À+ÀÀÀÀ	ÀÀ" 400 -
+192.168.0.225 - - [06/Jun/2025 09:05:03] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:05:03] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:05:08] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:09] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:10] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:10] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:10] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:10] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:11] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:11] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:12] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:12] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:12] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:13] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:13] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:13] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:13] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:14] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:15] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:16] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:18] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:23] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:24] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:25] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:27] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:28] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:31] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:31] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:32] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:32] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:33] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:33] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:33] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:34] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:34] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:34] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:34] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:35] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:35] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:36] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:36] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:36] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:37] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:37] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:37] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:39] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:40] "GET /calibrate_pan_tilt HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:47] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:05:47] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:05:47] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:05:55] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:05:57] "GET /set_motion_low_threshold?value=4 HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:06:00] "GET /set_motion_low_threshold?value=5 HTTP/1.1" 204 -
+192.168.0.225 - - [06/Jun/2025 09:15:08] "GET / HTTP/1.1" 200 -
+192.168.0.225 - - [06/Jun/2025 09:15:08] "GET /video_feed HTTP/1.1" 200 -
+167.94.146.60 - - [06/Jun/2025 09:35:52] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x8d\x96Ö\x06\x03\x92')
+167.94.146.60 - - [06/Jun/2025 09:35:52] " î  êÖ" 400 -
+167.94.146.60 - - [06/Jun/2025 09:35:55] "GET / HTTP/1.1" 200 -
+167.94.146.60 - - [06/Jun/2025 09:35:59] "GET / HTTP/1.1" 200 -
+167.94.146.60 - - [06/Jun/2025 09:35:59] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.60 - - [06/Jun/2025 09:36:00] code 505, message Invalid HTTP version (2.0)
+167.94.146.60 - - [06/Jun/2025 09:36:00] "PRI * HTTP/2.0" 505 -
+167.94.146.60 - - [06/Jun/2025 09:36:04] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.60 - - [06/Jun/2025 09:36:04] code 400, message Bad request version ('À\x14À')
+167.94.146.60 - - [06/Jun/2025 09:36:04] " ÷  óû´kZ¤%1ÏÏpLXâöû ÆüájOèáq÷É öl<Û(|2J<:kÞM®#88UÀ6V£Ðb+%Lä7 &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+167.94.146.60 - - [06/Jun/2025 09:36:08] code 400, message Bad request version ('À\x14À')
+167.94.146.60 - - [06/Jun/2025 09:36:08] " î  ê S5¬}B¼¨Áwí#×ÀÃRf%äúÀX <ý½ò>	&¨<k£Ï0PNH÷U£¥EÈ &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+167.94.146.60 - - [06/Jun/2025 09:36:09] "GET /login HTTP/1.1" 404 -
+167.94.146.60 - - [06/Jun/2025 09:36:10] "GET /favicon.ico HTTP/1.1" 404 -
+167.94.146.60 - - [06/Jun/2025 09:36:10] code 400, message Bad request version ('À\x14À')
+167.94.146.60 - - [06/Jun/2025 09:36:10] " ÷  óñS =F(ëä"ÿ*á`QìíD¸]%ê r@ô4%hsÍZBl+¢]_ß 9s Qbsl &Ì¨Ì©À/À0À+À,ÀÀ	ÀÀ" 400 -
+91.231.89.104 - - [06/Jun/2025 10:49:48] code 400, message Bad request version ('À#À¬À®À+À')
+91.231.89.104 - - [06/Jun/2025 10:49:48] "§ £Ø­ëËÊð-¯«ñ	b÷¯~]/ pÃíñÏ7ð^½ý `¾@¥ÒFXuaË;$¶¬Zá² =<   3 gÀÀ¢  9 kÀÀ£  E ¾  Ä ÀÀ	À#À¬À®À+À" 400 -
+91.231.89.110 - - [06/Jun/2025 10:49:53] "GET / HTTP/1.1" 200 -
+91.196.152.212 - - [06/Jun/2025 10:58:36] "GET /favicon.ico HTTP/1.1" 404 -
+183.160.195.162 - - [06/Jun/2025 12:32:18] "GET / HTTP/1.1" 200 -
+123.245.85.91 - - [06/Jun/2025 12:33:05] "GET / HTTP/1.1" 200 -
+36.32.3.30 - - [06/Jun/2025 12:33:07] "GET /favicon.ico HTTP/1.1" 404 -
+72.33.0.225 - - [06/Jun/2025 12:58:41] "GET /video_feed HTTP/1.1" 200 -
+72.33.0.225 - - [06/Jun/2025 12:58:56] "GET / HTTP/1.1" 200 -
+72.33.0.225 - - [06/Jun/2025 12:58:56] "GET /video_feed HTTP/1.1" 200 -
+147.185.132.84 - - [06/Jun/2025 14:14:21] "GET / HTTP/1.1" 200 -
+192.168.0.1 - - [06/Jun/2025 17:58:10] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 17:58:21] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 17:58:22] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 17:58:23] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.0.231 - - [06/Jun/2025 17:58:24] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.1 - - [06/Jun/2025 17:59:18] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 18:04:04] "GET /video_feed HTTP/1.1" 200 -
+147.185.132.225 - - [06/Jun/2025 18:05:17] "GET / HTTP/1.0" 200 -
+192.168.0.231 - - [06/Jun/2025 18:06:23] "GET /toggle_auto_scan HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:24] "GET / HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 18:06:24] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 18:06:28] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:32] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:34] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:36] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:37] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:38] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:39] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:39] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:40] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:41] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:42] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:42] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:42] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:43] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:44] "GET /pan_step?direction=right HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:46] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:49] "GET /pan_step?direction=left HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:06:57] "GET /video_feed HTTP/1.1" 200 -
+192.168.0.231 - - [06/Jun/2025 18:13:52] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:13:55] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:13:57] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:13:59] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:02] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:05] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:06] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:10] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:15] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:19] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:20] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:20] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:22] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:22] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:23] "GET /tilt_step?direction=up HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:25] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:28] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:29] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:31] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:32] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:33] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:35] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:36] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:38] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:41] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:43] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:45] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:48] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:52] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:54] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:56] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:57] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:14:58] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:15:00] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:15:05] "GET /tilt_step?direction=down HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:15:07] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:15:10] "GET /solinoid_auto3 HTTP/1.1" 204 -
+192.168.0.231 - - [06/Jun/2025 18:15:15] "GET /solinoid_auto3 HTTP/1.1" 204 -

@@ -58,6 +58,7 @@ last_motion_box = None
 CONSECUTIVE_MOTION_DETECTION_BUFFER = 1.5  # 50% larger region
 MOTION_LOW_THRESHOLD = 4  # Default value for the lower cutoff
 VIDEO_STREAM_MODE = "overlays"  # "overlays" or "threshold_overlays"
+MOTION_BLUR_SIZE = 21  # Must be odd, default 21
 
 # --- pigpio Setup ---
 pi = pigpio.pi()
@@ -169,14 +170,14 @@ def move_to_target(target_x, target_y, center_x, center_y):
 # --- Motion Detection Logic ---
 def detect_motion(prev_gray, frame, threshold):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+    blur_size = MOTION_BLUR_SIZE if MOTION_BLUR_SIZE % 2 == 1 else MOTION_BLUR_SIZE + 1  # Ensure odd
+    gray = cv2.GaussianBlur(gray, (blur_size, blur_size), 0)
     
     # Mask out high-brightness pixels (e.g., > 230)
     brightness_mask = (gray < 230).astype(np.uint8)
     masked_gray = gray * brightness_mask
     masked_prev = prev_gray * brightness_mask
     frame_delta = cv2.absdiff(masked_prev, masked_gray)
-    # Use MOTION_LOW_THRESHOLD for the lower cutoff
     thresh = cv2.threshold(frame_delta, MOTION_LOW_THRESHOLD, 255, cv2.THRESH_BINARY)[1]
     thresh = cv2.dilate(thresh, None, iterations=2)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -328,32 +329,47 @@ def gen_frames():
         # Convert frame to grayscale for motion detection
         if gen_frames.prev_gray is None:
             gray = cv2.cvtColor(frame_for_motion, cv2.COLOR_BGR2GRAY)
-            gray = cv2.GaussianBlur(gray, (21, 21), 0)
+            blur_size = MOTION_BLUR_SIZE if MOTION_BLUR_SIZE % 2 == 1 else MOTION_BLUR_SIZE + 1
+            gray = cv2.GaussianBlur(gray, (blur_size, blur_size), 0)
             gen_frames.prev_gray = gray
             motion_boxes = []
             thresh = np.zeros_like(gray)
+            contours = []
         else:
             now = time.time()
             auto_motion_active = AUTO_MOTION_ENABLED and (now > MANUAL_OVERRIDE_PAUSE_UNTIL)
             auto_fire_active = AUTO_FIRE_ENABLED and (now > MANUAL_OVERRIDE_PAUSE_UNTIL)
-            # Disable motion detection during and after any move
             if gen_frames.move_in_progress or now < gen_frames.pause_until or now < MOTION_DETECTION_PAUSE_UNTIL:
                 gray = cv2.cvtColor(frame_for_motion, cv2.COLOR_BGR2GRAY)
-                gray = cv2.GaussianBlur(gray, (21, 21), 0)
+                blur_size = MOTION_BLUR_SIZE if MOTION_BLUR_SIZE % 2 == 1 else MOTION_BLUR_SIZE + 1
+                gray = cv2.GaussianBlur(gray, (blur_size, blur_size), 0)
                 gen_frames.prev_gray = gray
                 motion_boxes = []
                 thresh = np.zeros_like(gray)
+                contours = []
                 motion_consecutive_count = 0
                 last_motion_box = None
             else:
                 gray, motion_boxes, max_box = detect_motion(gen_frames.prev_gray, frame_for_motion, MOTION_AREA_THRESHOLD)
-                # Calculate threshold image for "threshold_overlays" mode
                 brightness_mask = (gray < 230).astype(np.uint8)
                 masked_gray = gray * brightness_mask
                 masked_prev = gen_frames.prev_gray * brightness_mask
                 frame_delta = cv2.absdiff(masked_prev, masked_gray)
-                thresh = cv2.threshold(frame_delta, MOTION_LOW_THRESHOLD, 255, cv2.THRESH_BINARY)[1]
-                thresh = cv2.dilate(thresh, None, iterations=2)
+                # For high-res contours, use a smaller blur and lower threshold
+                if VIDEO_STREAM_MODE == "contours_overlays":
+                    highres_blur = 5  # much sharper
+                    highres_gray = cv2.GaussianBlur(gray, (highres_blur, highres_blur), 0)
+                    highres_masked_gray = highres_gray * brightness_mask
+                    highres_masked_prev = gen_frames.prev_gray * brightness_mask
+                    highres_frame_delta = cv2.absdiff(highres_masked_prev, highres_masked_gray)
+                    highres_thresh = cv2.threshold(highres_frame_delta, max(1, MOTION_LOW_THRESHOLD // 2), 255, cv2.THRESH_BINARY)[1]
+                    highres_thresh = cv2.dilate(highres_thresh, None, iterations=1)
+                    contours, _ = cv2.findContours(highres_thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    thresh = highres_thresh  # for display
+                else:
+                    thresh = cv2.threshold(frame_delta, MOTION_LOW_THRESHOLD, 255, cv2.THRESH_BINARY)[1]
+                    thresh = cv2.dilate(thresh, None, iterations=2)
+                    contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                 gen_frames.prev_gray = gray
 
                 if max_box is not None:
@@ -451,21 +467,29 @@ def gen_frames():
             draw_overlays(frame, width, height, center_x, center_y)
             output_frame = frame
         elif VIDEO_STREAM_MODE == "threshold_overlays":
-            # Convert threshold image to 3-channel and draw overlays
             thresh_color = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
-
-            # Draw motion area overlays (green for initial, red for confirmed)
             for (x, y, w, h) in motion_boxes:
-                # Draw light green box for any detected motion
                 cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (144, 238, 144), 2)
-            if max_box is not None and motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
+            if 'max_box' in locals() and max_box is not None and motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
                 x, y, w, h = max_box
-                # Draw red box for confirmed motion
                 cv2.rectangle(thresh_color, (x, y), (x + w, y + h), (0, 0, 255), 3)
-
-            # Draw overlays (crosshairs, pan/tilt, etc.)
             draw_overlays(thresh_color, width, height, center_x, center_y)
             output_frame = thresh_color
+        elif VIDEO_STREAM_MODE == "contours_overlays":
+            # Start with the threshold image in color
+            contour_img = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
+            # Draw all contours in yellow
+            if 'contours' in locals():
+                cv2.drawContours(contour_img, contours, -1, (0, 255, 255), 2)
+            # Draw motion area overlays (green for initial, red for confirmed)
+            for (x, y, w, h) in motion_boxes:
+                cv2.rectangle(contour_img, (x, y), (x + w, y + h), (144, 238, 144), 2)
+            if 'max_box' in locals() and max_box is not None and motion_consecutive_count >= MOTION_CONSECUTIVE_FRAMES:
+                x, y, w, h = max_box
+                cv2.rectangle(contour_img, (x, y), (x + w, y + h), (0, 0, 255), 3)
+            # Draw overlays (crosshairs, pan/tilt, etc.)
+            draw_overlays(contour_img, width, height, center_x, center_y)
+            output_frame = contour_img
         else:
             output_frame = frame  # fallback
 
@@ -623,7 +647,14 @@ HTML_PAGE = """
         <select id="video-mode" onchange="setVideoMode(this.value)">
             <option value="overlays" {% if video_stream_mode == 'overlays' %}selected{% endif %}>Image with Overlays</option>
             <option value="threshold_overlays" {% if video_stream_mode == 'threshold_overlays' %}selected{% endif %}>Threshold Image with Overlays</option>
+            <option value="contours_overlays" {% if video_stream_mode == 'contours_overlays' %}selected{% endif %}>Contours with Overlays</option>
         </select>
+    </div>
+    <div>
+        <label for="motion-blur-size">Motion Blur Size: <span id="motion-blur-size-value">{{ motion_blur_size }}</span></label>
+        <input type="range" min="1" max="51" value="{{ motion_blur_size }}" id="motion-blur-size" step="2"
+               oninput="document.getElementById('motion-blur-size-value').innerText=this.value"
+               onchange="fetch('/set_motion_blur_size?value='+this.value)">
     </div>
     </div>
     <script>
@@ -660,7 +691,8 @@ def index():
         auto_scan=AUTO_SCAN_ENABLED,
         auto_scan_wait=AUTO_SCAN_WAIT,
         motion_low_threshold=MOTION_LOW_THRESHOLD,
-        video_stream_mode=VIDEO_STREAM_MODE
+        video_stream_mode=VIDEO_STREAM_MODE,
+        motion_blur_size=MOTION_BLUR_SIZE
     )
 
 @app.route('/video_feed')
@@ -749,11 +781,25 @@ def set_motion_low_threshold():
     except Exception:
         return ("Invalid value", 400)
 
+@app.route('/set_motion_blur_size')
+def set_motion_blur_size():
+    global MOTION_BLUR_SIZE
+    try:
+        value = int(request.args.get('value', 21))
+        # Ensure value is odd and within a reasonable range
+        value = max(1, min(value, 51))
+        if value % 2 == 0:
+            value += 1
+        MOTION_BLUR_SIZE = value
+        return ("", 204)
+    except Exception:
+        return ("Invalid value", 400)
+
 @app.route('/set_video_mode')
 def set_video_mode():
     global VIDEO_STREAM_MODE
     mode = request.args.get('mode', 'overlays')
-    if mode in ['overlays', 'threshold_overlays']:
+    if mode in ['overlays', 'threshold_overlays', 'contours_overlays']:
         VIDEO_STREAM_MODE = mode
         return ("", 204)
     return ("Invalid mode", 400)
